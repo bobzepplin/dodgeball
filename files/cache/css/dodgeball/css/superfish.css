@@ -1,0 +1,117 @@
+/*** ESSENTIAL STYLES ***/
+.sf-menu, .sf-menu * {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	z-index: 99;
+}
+.sf-menu li {
+	position: relative;
+}
+.sf-menu ul {
+	position: absolute;
+	display: none;
+	top: 100%;
+	left: 0;
+	margin-top: -15px;
+	z-index: 200;
+}
+.sf-menu > li {
+	float: left;
+}
+.sf-menu li:hover > ul,
+.sf-menu li.sfHover > ul {
+	display: block;
+}
+
+.sf-menu a {
+	display: block;
+	position: relative;
+}
+.sf-menu ul ul {
+	top: 0;
+	left: 100%;
+}
+
+
+/*** DEMO SKIN ***/
+.sf-menu {
+	float: left;
+}
+.sf-menu ul {
+	box-shadow: -1px 8px 13px rgba(0,0,0,.2);
+	min-width: 12em; /* allow long menu items to determine submenu width */
+	*width: 12em; /* no auto sub width for IE7, see white-space comment below */
+}
+
+.sf-menu li:hover{
+	background: #e13c19;
+}
+
+.sf-menu li.current{
+	background: #e13c19;
+}
+
+.sf-menu a {
+	padding: 20px 20px 19px 20px;
+	text-decoration: none;
+	zoom: 1; /* IE7 */
+	font-family: 'Open Sans', Helvetica, Sans-serif;
+	font-size:14px;
+	text-transform: uppercase;
+	border-right: #3e3d3d 1px solid;
+}
+div.general-wrapper ul.sf-menu a {
+	color: #fff;
+}
+.sf-menu li {
+	white-space: nowrap; /* no need for Supersubs plugin */
+	*white-space: normal; /* ...unless you support IE7 (let it wrap) */
+}
+.sf-menu ul li {
+	border-top: #ccc 1px dotted;
+	background: #fff;
+	z-index: 200;
+}
+
+div.general-wrapper ul.sf-menu ul li a{
+	color:#606060;
+	background: #fff;
+	font-size: 13px;
+	padding:10px 5px 10px 10px;
+	border: none;
+	-webkit-transition: all .2s;
+	transition: all .2s;
+}
+
+div.general-wrapper ul.sf-menu ul li a:hover {
+	background: #e13c19;
+	color: #fff;
+}
+
+.sf-menu ul ul li {
+	background: #fff;
+}
+
+
+.sf-menu ul li.nav-first {
+	padding-top: 9px;
+	border-top: none;
+	background: transparent url('http://www.dodgeball.ch/themes/dodgeball/img/template/navig_top_arrow.gif') no-repeat 20px 0px;
+
+}
+
+div.sf-menu ul li.nav-first:hover {
+	border-top: none;
+	background: transparent url('http://www.dodgeball.ch/themes/dodgeball/img/template/navig_top_arrow.gif') no-repeat center 0px;
+}
+
+
+div.general-wrapper ul.sf-menu li a.first{
+	background: transparent url('http://www.dodgeball.ch/themes/dodgeball/img/template/navig_homepage.png') no-repeat 50% 50%;
+	height: 19px;
+	width: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/superfish.css" media="screen">
+
+        <link rel="stylesheet" href="css/orbit-1.2.3.css">
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+        <script type="text/javascript" src="js/jquery.orbit-1.2.3.min.js"></script>
+
+        <script type="text/javascript" src="js/hoverIntent.js"></script>
+        <script type="text/javascript" src="js/superfish.js"></script>
+
+
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+
+        <!--[if IE]>
+                 <style type="text/css">
+                     .timer { display: none !important; }
+                     div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom: 1; }
+                </style>
+            <![endif]-->
+        
+        <!-- Run the plugin -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#featured').orbit({
+                 animation: 'horizontal-push',                  // fade, horizontal-slide, vertical-slide, horizontal-push
+                 animationSpeed: 800,                // how fast animtions are
+                 timer: true,            // true or false to have the timer
+                 advanceSpeed: 4000,         // if timer is enabled, time between transitions 
+                 pauseOnHover: true,        // if you hover pauses the slider
+                 startClockOnMouseOut: true,    // if clock should start on MouseOut
+                 bullets: true,
+                 directionalNav: true      // manual advancing directional navs
+            });
+            $('ul.sf-menu').superfish({
+            delay:       0,                            // one second delay on mouseout
+            animation:     {opacity:'show'},   // an object equivalent to first parameter of jQuery’s .animate() method. Used to animate the submenu open
+            animationOut:  {opacity:'hide'},   // an object equivalent to first parameter of jQuery’s .animate() method Used to animate the submenu closed
+            speed:       'fast',                          // faster animation speed
+            autoArrows:  true                            // disable generation of arrow mark-up
+        });
+        });
+
+
+        </script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="general-wrapper">
+            <div class="header-wrapper">
+                <div class="header-container">
+                    <h1 class="logo"><a href="#"><img src="img/template/microfinish_logo.gif" alt="logo microfinish" /></a></h1>
+                </div><!-- "end header-container" -->
+            </div> <!-- end header-wrapper -->
+
+            <div class="slider-wrapper">
+                <div class="slider-container">
+                    <div id="featured"> 
+                        <div class="slide" style="background: url(img/slider/1.jpg) no-repeat;">
+                            <div class="slider_left" style="float:left">
+                            </div>
+                            <div class="slider_right" style="float:right">
+                                <h2>Tribofinition</h2>
+                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.
+                                <a href="#">En savoir plus</a></p>
+                                <div class="spacer" style="clear:both;"></div>
+                            </div>
+                        </div>
+
+                        <div class="slide" style="background: url(img/slider/1.jpg) no-repeat;">
+                            <div class="slider_right" style="float:right">
+                                <h2>Sablage sur verre</h2>
+                                <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat.</p>
+                                <a href="#">En savoir plus</a></p>
+                                <div class="spacer" style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacer" style="clear:both;"></div>
+                </div><!-- "end slider-container" -->
+            </div> <!-- end slider-wrapper -->
+
+            <div class="navig-wrapper">
+                <div class="navig-container">
+                    <ul class="sf-menu">
+                        <li class="current">
+                            <a href="#a" class="first"></a>
+                        </li>
+
+            <li class="current">
+                <a href="#a">A propos</a>
+                <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#a">Industrie</a>
+                <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#a">Sablage Verre</a>
+                <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#a">Bâtiment</a>
+            <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+             <li>
+                <a href="#a">Vente Abrasif</a>
+            <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+             <li>
+                <a href="#a">Personnalisation</a>
+            <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#a">Contact</a>
+            <ul>
+                    <li class="nav-first">
+                        <a href="#aa">menu item that is quite long</a>
+                    </li>
+                    <li>
+                        <a href="#ab">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                    <li>
+                        <a href="#">menu item</a>
+                        
+                    </li>
+                </ul>
+            </li>
+            
+        </ul>
+                </div><!-- "end navig-container" -->
+            </div> <!-- end navig-wrapper -->
+
+            <div class="content-wrapper">
+                <div class="content-container">
+                    <div class="content-left-container">
+                        <h2>«La maîtrise de la finition»</h2>
+                        <p><strong>La finition de toute pièce mécanique ou micromécanique est le type d'opération qu'il est difficile de maîtriser.</strong></p>
+                        <p>40 ans d'expérience et une équipe de 27 collaborateurs à la pointe des techniques actuelles sont les atouts qui complétent chez " MICRO-FINISH " une gamme complète d'installations performantes.</p>
+                        <p>De la connectique électronique à l'horlogerie, du médical à l'aéronautique en passant par la construction INOX et la verrerie technique, nous saurons vous proposer une solution à tout problème de finition.</p>
+
+                    </div><!-- "end content-left-container" -->
+                    <div class="sidebar-left-container">
+                        <div class="actualites-sidebar-container">
+                            <h3>Actualités</h3><a class="plus" href="#">+</a>
+                              <div class="spacer" style="clear:both;"></div>
+                            <hr />
+                            <div class="actu">
+                                <p class="date">12.05.2013</p>
+                                <h4>Nouveau site internet:</h4>
+                                <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.<a href="#">En savoir plus...</a></p>
+                            </div><!-- "end actu" -->
+                            <div class="actu">
+                                <p class="date">12.05.2013</p>
+                                <h4>Nouveau site internet:</h4>
+                                <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.<a href="#">En savoir plus...</a></p>
+                            </div><!-- "end actu" -->
+                        </div>
+                    </div><!-- "end sidebar-left-container" -->
+
+                     <div class="spacer" style="clear:both;"></div>
+                     <div class="highlight-elements">
+                        <div class="highlight">
+                            <div class="highlight-image">
+                                <img src="http://placekitten.com/300/150">
+                                <div class="highlight-title">
+                                    <h3>SECTION 1</h3>
+                                    <a class="plus" href="">+</a>
+                                    <div class="spacer" style="clear:both;"></div>
+                                </div>
+                            </div>
+                            <div class="highlight-content">
+                                <h4>Donner du relief à votre verre:</h4>
+                                <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth.</p>
+                                <a href="#">En savoir plus !</a>
+                            </div>
+                        </div><!-- "end highlight" -->
+                        <div class="highlight">
+                            <div class="highlight-image">
+                                <img src="http://placekitten.com/300/150">
+                                <div class="highlight-title">
+                                    <h3>SECTION 1</h3>
+                                    <a class="plus" href="">+</a>
+                                    <div class="spacer" style="clear:both;"></div>
+                                </div>
+                            </div>
+                            <div class="highlight-content">
+                                <h4>Donner du relief à votre verre:</h4>
+                                <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth.</p>
+                                <a href="#">En savoir plus !</a>
+                            </div>
+                        </div><!-- "end highlight" -->
+                        <div class="highlight">
+                            <div class="highlight-image">
+                                <img src="http://placekitten.com/300/150">
+                                <div class="highlight-title">
+                                    <h3>SECTION 1</h3>
+                                    <a class="plus" href="">+</a>
+                                    <div class="spacer" style="clear:both;"></div>
+                                </div>
+                            </div>
+                            <div class="highlight-content">
+                                <h4>Donner du relief à votre verre:</h4>
+                                <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth.</p>
+                                <a href="#">En savoir plus !</a>
+                            </div>
+                        </div><!-- "end highlight" -->
+                            
+                        <div class="spacer" style="clear:both;"></div>
+                    </div><!-- "end highlight-elements" -->
+                </div><!-- "end content-container" -->
+            </div> <!-- end content-wrapper -->
+
+            <div class="footer-wrapper">
+                <div class="footer-container">
+                    <div class="footer_1">
+                        <div class="left">
+                            Entreprise certifiée ISO 9001, ISO 14001
+                        </div>
+                        <div class="right">
+                            <a href="#">Certifications</a>  |  <a href="#">Ecoresponsabilité</a>  |  <a href="#">Contact</a>
+                        </div>
+                        <div class="spacer" style="clear:both;"></div>
+                    </div>
+                    <div class="footer_2">
+                        <div class="left">
+                            ©2013 copyright Microfinish
+                        </div>
+                        <div class="right">
+                            <a href="http://www.diabolo.com" target="_blank">diabolo design // visual strategy</a>
+                        </div>
+                        <div class="spacer" style="clear:both;"></div>
+                    </div>
+                </div><!-- "end footer-container" -->
+            </div> <!-- end footer-wrapper -->
+        </div><!-- "end general-wrapper" -->
+
+
+<div class="">
+</div><!-- "end " -->
+
+    </body>
+</html>

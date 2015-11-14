@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema version="0.3">
+  <table name="btMsGallery">
+    <field name="bID" type="I">
+      <KEY />
+      <UNSIGNED />
+    </field>
+    <field name="fsID" type="I">
+      <UNSIGNED />
+    </field>
+  </table>
+  <table name="btMsGalleryPositions">
+    <field name="bID" type="I">
+      <UNSIGNED />
+    </field>
+    <field name="fID" type="I">
+      <UNSIGNED />
+    </field>
+    <field name="position" type="I">
+      <UNSIGNED />
+    </field>
+  </table>
+</schema>
