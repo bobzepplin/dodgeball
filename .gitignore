@@ -42,6 +42,7 @@ Thumbs.db
 config/site.php
 files/cache/*
 files/tmp/*
+.htaccess
 
 #PHP STORM FILES
 ####################

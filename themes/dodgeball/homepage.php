@@ -96,7 +96,7 @@ $cl = substr($lh->getLanguage(),0,2);?>
                         $a->display(); 
                         ?>
                         </div>
-                        
+
                         <div class="right">
                             <?php $a = new GlobalArea('Bottom Menu');
                         $a->display(); 
