@@ -1,4 +1,4 @@
-O:15:"PageCacheRecord":3:{s:7:"expires";i:1445782822;s:14:"cacheRecordKey";s:5:"login";s:7:"content";s:4360:"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+O:15:"PageCacheRecord":3:{s:7:"expires";i:1447727853;s:14:"cacheRecordKey";s:5:"login";s:7:"content";s:4358:"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
@@ -9,7 +9,7 @@ O:15:"PageCacheRecord":3:{s:7:"expires";i:1445782822;s:14:"cacheRecordKey";s:5:"
 <script type="text/javascript">
 var CCM_DISPATCHER_FILENAME = '/index.php';var CCM_CID = 110;var CCM_EDIT_MODE = false;var CCM_ARRANGE_MODE = false;var CCM_IMAGE_PATH = "/concrete/images";
 var CCM_TOOLS_PATH = "/index.php/tools/required";
-var CCM_BASE_URL = "http://www.dodgeball.ch";
+var CCM_BASE_URL = "http://dodgeball:8888";
 var CCM_REL = "";
 
 </script>
