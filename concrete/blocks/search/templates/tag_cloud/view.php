@@ -1,7 +1,7 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?> 
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?> 
 
-<?php 
-	Loader::model('attribute/categories/collection');
+<?php
+	
 	// grab all tags in use based on the path
 	$ak = CollectionAttributeKey::getByHandle('tags');
 	$akc = $ak->getController();
@@ -27,8 +27,8 @@
 	
 	
 	function setFontPx($weight) {
-		$tagMinFontPx = '10';
-		$tagMaxFontPx = '24';
+		$tagMinFontPx = 10;
+		$tagMaxFontPx = 24;
 
 		
 		$em = ($weight * ($tagMaxFontPx - $tagMinFontPx)) + $tagMinFontPx;
@@ -38,23 +38,23 @@
 ?>
 
 
-<?php  if ($title) { ?>
-	<h3><?php echo $title?></h3>
-<?php  } ?>
+<?php if ($title) { ?>
+	<h3><?php echo h($title)?></h3>
+<?php } ?>
 
 <div class="ccm-search-block-tag-cloud-wrapper ">
 
 <ul id="ccm-search-block-tag-cloud-<?php echo $bID?>" class="ccm-search-block-tag-cloud">
 
-<?php 
+<?php
 	for ($i = 0; $i < $ttags->count(); $i++) {
 		$akct = $tags[$i];
-		$qs = $akc->field('atSelectOptionID') . '[]=' . $akct->getSelectAttributeOptionID();
+		$qs = urlencode($akc->field('atSelectOptionID') . '[]') . '=' . urlencode($akct->getSelectAttributeOptionID());
 		?>
-		<li><a style="font-size: <?php echo $tagSizes[$akct->getSelectAttributeOptionUsageCount()]?>px !important" href="<?php echo $this->url($resultTargetURL)?>?<?php echo $qs?>"><?php echo $akct->getSelectAttributeOptionValue()?></a>
+		<li><a style="font-size: <?php echo $tagSizes[$akct->getSelectAttributeOptionUsageCount()]?>px !important" href="<?php echo $view->url($resultTargetURL)?>?<?php echo $qs?>"><?php echo $akct->getSelectAttributeOptionValue()?></a>
 		<span>(<?php echo $akct->getSelectAttributeOptionUsageCount()?>)</span>
 		</li>
-<?php  } ?>
+<?php } ?>
 </ul>
 
 <div class="ccm-spacer">&nbsp;</div>

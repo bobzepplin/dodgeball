@@ -1,0 +1,90 @@
+a, a:hover, a:focus { text-decoration: none; color: inherit; outline: none; }
+
+.clear { clear: both; }
+.nopadding { padding: 0 !important; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+
+  &.stop-scroll{
+
+    @include breakpoint($sm) {
+      overflow: hidden;
+      position: relative;
+    }
+  }
+}
+
+.orange{
+  color: $clientcolor !important;
+}
+
+* {
+  box-sizing: border-box;
+  -moz-outline-style: none;
+  outline: none;
+}
+
+.nopadding{
+  padding: 0 !important;
+}
+
+::selection {
+  background: $black;
+  color: $white;
+}
+
+::-moz-selection {
+  background: $black;
+  color: $white;
+}
+
+/* Prevent flickering on lazy laoded images */
+.lazy-hidden {
+  opacity: 0;
+}
+
+.messageIe{
+  display: none;
+}
+
+
+
+
+/* Pop */
+@-webkit-keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+
+@keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+
+.hvr-pop {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+}
+.hvr-pop:hover, .hvr-pop:focus, .hvr-pop:active {
+  -webkit-animation-name: hvr-pop;
+  animation-name: hvr-pop;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}

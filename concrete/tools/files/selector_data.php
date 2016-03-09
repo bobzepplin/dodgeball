@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 if (!Loader::helper('validation/numbers')->integer($_REQUEST['fID'])) {
@@ -11,7 +11,7 @@ $u = new User();
 $form = Loader::helper('form');
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }
 
 
@@ -29,7 +29,7 @@ $canEdit = $fv->canEdit() ? 1 : 0;
 ?>
 
 <div class="ccm-file-selected" fID="<?php echo $_REQUEST['fID']?>" ccm-file-manager-field="<?php echo $selectedField?>" ccm-file-manager-can-duplicate="<?php echo $fp->canCopyFile()?>" ccm-file-manager-can-admin="<?php echo ($fp->canEditFilePermissions())?>" ccm-file-manager-can-delete="<?php echo $fp->canDeleteFile()?>" ccm-file-manager-can-view="<?php echo $canViewInline?>" ccm-file-manager-can-replace="<?php echo $fp->canEditFileContents()?>" ccm-file-manager-can-edit="<?php echo $canEdit?>"  >
-<div class="ccm-file-selected-thumbnail"><?php echo $fv->getThumbnail(1)?></div>
-<div class="ccm-file-selected-data"><div><?php echo $fv->getTitle()?></div><div></div></div>
+<div class="ccm-file-selected-thumbnail"><?php echo $fv->getListingThumbnail()?></div>
+<div class="ccm-file-selected-data"><div><?php echo h($fv->getTitle())?></div><div></div></div>
 <div class="ccm-spacer">&nbsp;</div>
 </div>

@@ -1,0 +1,49 @@
+#GeneralWrapper{ display: none !important; }
+.messageIe{
+  display: table;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #FFF;
+  text-align: center;
+  background-image: url('../../dist/img/background.jpg');
+  background-size: cover;
+
+}
+.cache-slide{
+  background: url('../../dist/img/backblack.png');
+  background-repeat: repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+}
+
+
+.centerIe{
+  display: table-cell;
+  color: #fff;
+  z-index: 1;
+  position: relative;
+  vertical-align: middle;
+  line-height: normal;
+}
+.centerIe hr{
+  width: 100px;
+}
+
+.phototheque{
+  display: none;
+}
+.close-phototheque{
+  display: none;
+}
+
+
+
+
+
+

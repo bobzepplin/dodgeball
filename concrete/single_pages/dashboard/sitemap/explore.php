@@ -1,41 +1,68 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");
+$view = View::getInstance();
+?>
 
-<style type="text/css">
-div.ccm-sitemap-explore ul li.ccm-sitemap-explore-paging {display: none;}
-</style>
+    <style type="text/css">
+        div.ccm-sitemap-explore ul li.ccm-sitemap-explore-paging {
+            display: none;
+        }
+    </style>
 
-<script type="text/javascript">
+    <script type="text/javascript">
+        (function () {
+            var my_url = '<?php echo $view->action(''); ?>';
+            $(function () {
+                $('div#ccm-flat-sitemap-container').concreteSitemap({
+                    displayNodePagination: true,
+                    cParentID: '<?php echo $nodeID?>',
+                    displaySingleLevel: true,
+                    onDisplaySingleLevel: function (node) {
+                        if (window && window.history && window.history.pushState) {
+                            window.history.pushState({
+                                key: node.data.key
+                            }, 'title', my_url + '/-/' + node.data.key);
+                        }
+                    }
+                });
+            });
+            $(window).on('popstate', function (event) {
+                var redirect;
+                if (event.originalEvent.state && event.originalEvent.state.key) {
+                    redirect = my_url + '/-/' + event.originalEvent.state.key;
+                } else {
+                    return true;
+                }
+                window.location = redirect;
+                $.fn.dialog.showLoader();
+                return false;
+            });
+        }());
+    </script>
 
-CCM_LAUNCHER_SITEMAP = 'explore'; // we need this for when we are moving and copying
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(
+    t('Sitemap'),
+    t(
+        'Sitemap flat view lets you page through particular long lists of pages.'),
+    'span10 offset1',
+    false); ?>
+    <div class="ccm-pane-body">
 
-$(function() {
-	ccmSitemapLoad('<?php echo $instanceID?>', 'explore');
-});
-</script>
+        <?php if ($dh->canRead()) { ?>
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Sitemap'), t('Sitemap flat view lets you page through particular long lists of pages.'), 'span10 offset1', false);?>
-<div class="ccm-pane-body">
+            <div id="ccm-flat-sitemap-container" data-sitemap="container"></div>
 
-<?php  if ($dh->canRead()) { ?>	
-	<div id="ccm-sitemap-message"></div>
+        <?php } else { ?>
+            <p><?php echo t('You do not have access to the dashboard sitemap.') ?></p>
+        <?php } ?>
 
-	<div id="tree" class="ccm-sitemap-explore">
-		<ul id="tree-root0" tree-root-node-id="0" sitemap-display-mode="explore" sitemap-instance-id="<?php echo $instanceID?>">
-		<?php echo $listHTML?>
-		</ul>
-	</div>
-<?php  } else { ?>
-	<p><?php echo t('You do not have access to the dashboard sitemap.')?></p>
-<?php  } ?>
+    </div>
+    <div class="ccm-pane-footer" id="ccm-explore-paging-footer">
 
-</div>	
-<div class="ccm-pane-footer" id="ccm-explore-paging-footer">
-	
-</div>
+    </div>
 
-<script type="text/javascript">
-$(function() {
-	$('#ccm-explore-paging-footer').html($('li.ccm-sitemap-explore-paging').html());
-});
-</script>
+    <script type="text/javascript">
+        $(function () {
+            $('#ccm-explore-paging-footer').html($('li.ccm-sitemap-explore-paging').html());
+        });
+    </script>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);

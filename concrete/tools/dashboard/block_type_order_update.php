@@ -1,5 +1,5 @@
-<?php 
-defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php
+defined('C5_EXECUTE') or die("Access Denied.");
 $canRead = false;
 $ch = Page::getByPath('/dashboard/blocks/types');
 $cp = new Permissions($ch);
@@ -11,7 +11,6 @@ if (!$canRead) {
 	die(t("Access Denied."));
 }
 
-Loader::model('block_types');
 $btID = intval($_REQUEST['btID']);
 $btDisplayOrder = intval($_REQUEST['btDisplayOrder']);
 if ($btID && $btDisplayOrder) {

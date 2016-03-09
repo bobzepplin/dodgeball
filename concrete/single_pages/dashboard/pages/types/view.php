@@ -1,267 +1,147 @@
-<?php 
-defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-$ih = Loader::helper('concrete/interface');
-$cap = Loader::helper('concrete/dashboard');
-$valt = Loader::helper('validation/token');
-$valc = Loader::helper('concrete/validation');
-$form = Loader::helper('form');
-$ctArray = CollectionType::getList();
-$args['section'] = 'collection_types';
-$u = new User();
+<?php if (($this->controller->getTask() == 'submit' || $this->controller->getTask() == 'edit') && is_object($pagetype)) { ?>
 
-Loader::model('file_set');
-$pageTypeIconsFS = FileSet::getByName("Page Type Icons");
+<form class="form-horizontal" method="post" action="<?php echo $view->action('submit', $pagetype->getPageTypeID())?>">
+<div class="ccm-pane-body">
+<?php echo Loader::element('page_types/form/base', array('pagetype' => $pagetype));?>
+</div>
+<div class="ccm-dashboard-form-actions-wrapper">
+<div class="ccm-dashboard-form-actions">
+	<a href="<?php echo $view->url('/dashboard/pages/types')?>" class="btn btn-default pull-left"><?php echo t('Cancel')?></a>
+	<button class="pull-right btn btn-primary" type="submit"><?php echo t('Save')?></button>
+</div>
+</div>
 
-if ($_GET['cID'] && $_GET['task'] == 'load_master') { 
-	$u->loadMasterCollectionEdit($_GET['cID'], 1);
-	header('Location: ' . BASE_URL . DIR_REL . '/' . DISPATCHER_FILENAME . '?cID=' . $_GET['cID'] . '&mode=edit');
-	exit;
-}
+</form>
 
-if ($_REQUEST['task'] == 'edit') {
-	$ct = CollectionType::getByID($_REQUEST['ctID']);
-	if (is_object($ct)) { 		
-			
-		$ctName = $ct->getCollectionTypeName();
-		$ctHandle = $ct->getCollectionTypeHandle();		
-		$ctName = Loader::helper("text")->entities($ctName);
-		$ctHandle = Loader::helper('text')->entities($ctHandle);
+<?php } else {
+	$pk = PermissionKey::getByHandle('access_page_type_permissions');
+	 ?>
 
-		$ctEditMode = true;
-	}
-}
-
-?>
-
-<?php 
-if ($ctEditMode) { 
-	$ct->populateAvailableAttributeKeys();
-
-        $akIDArray = $_POST['akID'];
-        if (!is_array($akIDArray)) {
-            $akIDArray = array();
-        }
-
-	?>
-	
-    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Page Type').'<span class="label" style="position:relative;top:-3px;left:12px;">'.t('* required field').'</span>', false, false, false);?>
-    
-    <form class="form-horizontal" method="post" id="update_page_type" action="<?php echo $this->url('/dashboard/pages/types/', 'update')?>">
-	<?php echo $valt->output('update_page_type')?>
-    <?php echo $form->hidden('ctID', $_REQUEST['ctID']); ?>
-    <?php echo $form->hidden('task', 'edit'); ?>
-    <?php echo $form->hidden('update', '1'); ?>
-    
-	<div class="ccm-pane-body">
-		
-        <table class="table" border="0" cellspacing="0" cellpadding="0">
-            <thead>
-                <tr>
-                    <th class="header"><?php echo t('Name')?> <span class="required">*</span></th>
-                    <th class="header"><?php echo t('Handle')?> <span class="required">*</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="width: 60%">
-                        <?php echo $form->text('ctName', $ctName, array('style' => 'width:100%'))?>
-                    </td>
-                    <td>
-                        <?php echo $form->text('ctHandle', $ctHandle, array('style' => 'width:100%'))?>
-                    </td>
-                </tr>
-			</tbody>
-		</table>
-        
-        <table class="table" border="0" cellspacing="0" cellpadding="0">
-            <thead>
-                <tr>
-                    <th class="subheader">
-                    <?php echo t('Icon')?>
-                    <?php 
-                        if (!is_object($pageTypeIconsFS)) {
-                            print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(To add your own page type icons, create a file set named "%s" and add files to that set)', 'Page Type Icons');
-                            print '</span>';
-                        } else {
-                            print '<span style="margin-left: 4px; color: #aaa">';
-                            print t('(Pulling icons from file set "%s". Icons will be displayed at %s x %s.)', 'Page Type Icons', COLLECTION_TYPE_ICON_WIDTH, COLLECTION_TYPE_ICON_HEIGHT);
-                            print '</span>';
-                        }
-                    ?>
-                    </th>
-                </tr>
-			</thead>
-            <tbody>
-                <tr>
-                    <td>
-                        
-                            <?php  
-                            $first = true;
-                            foreach($icons as $ic) { 
-                                if(is_object($ic)) {
-                                    $fv = $ic->getApprovedVersion(); 
-                                    $checked = false;
-                                    if ($ct->getCollectionTypeIcon() == $ic->getFileID() || $first) { 
-                                        $checked = 'checked';
-                                    }
-                                    $first = false;
-                                    ?>
-                                    <label class="checkbox inline">
-                                    <input type="radio" name="ctIcon" value="<?php echo  $ic->getFileID() ?>" style="vertical-align: middle" <?php echo $checked?> />
-                                    <img src="<?php echo  $fv->getRelativePath(); ?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
-                                    </label>
-                                <?php  
-                                } else {
-                                    $checked = false;
-                                    if ($ct->getCollectionTypeIcon() == $ic || $first) { 
-                                        $checked = 'checked';
-                                    }
-                                    $first = false;
-                                    ?>
-                                    <label class="checkbox inline">
-                                    <input type="radio" name="ctIcon" value="<?php echo  $ic ?>" style="vertical-align: middle" <?php echo $checked?> />
-                                        <img src="<?php echo REL_DIR_FILES_COLLECTION_TYPE_ICONS.'/'.$ic;?>" width="<?php echo COLLECTION_TYPE_ICON_WIDTH?>" height="<?php echo COLLECTION_TYPE_ICON_HEIGHT?>" style="vertical-align: middle" />
-                                    </label>
-                                <?php 
-                                }
-                            
-                            } ?>
-                        
-                    </td>
-                </tr>
-			</tbody>
-		</table>
-        
-        <table class="table" border="0" cellspacing="0" cellpadding="0">
-            <thead>
-                <tr>
-                    <th colspan="3" class="subheader"><?php echo  t('Default Attributes'); ?></th>
-                </tr>
-			</thead>
-            <tbody>
-                    <?php 
-                    $attribs = CollectionAttributeKey::getList();
-                    $i = 0;
-                    foreach($attribs as $ak) { 
-                    if ($i == 0) { ?>
-                        <tr class="inputs-list">
-                    <?php  } ?>
-                    
-                            <td width="33%">
-                            <label>
-                            <input type="checkbox" name="akID[]" value="<?php echo $ak->getAttributeKeyID()?>" <?php  if (($this->controller->isPost() && in_array($ak->getAttributeKeyID(), $akIDArray))) { ?> checked <?php  } else if ((!$this->controller->isPost()) && $ct->isAvailableCollectionTypeAttribute($ak->getAttributeKeyID())) { ?> checked <?php  } ?> />
-                            <span><?php echo $ak->getAttributeKeyName()?></span>
-                            </label>
-                            </td>
-                    
-                    <?php  $i++;
-                    
-                    if ($i == 3) { ?>
-                        </tr>
-                    <?php  
-                    $i = 0;
-                    }
-                    
-                    }
-                
-                    if ($i < 3 && $i > 0) {
-                        for ($j = $i; $j < 3; $j++) { ?>
-                            <td>&nbsp;</td>
-                        <?php  } ?>
-                        </tr>
-                    <?php  } ?>
-            </tbody>
-        </table>
-	</div>
-
-    <?php  $confirmMsg = t('Are you sure?'); ?>
-	<script type="text/javascript">
-	deletePageType = function() {
-		if(confirm('<?php echo $confirmMsg?>')){ 
-			location.href="<?php echo $this->url('/dashboard/pages/types/','delete',$_REQUEST['ctID'], $valt->generate('delete_page_type'))?>";
-		}	
-	}
-	</script>
-    
-    <div class="ccm-pane-footer">
-        <?php  print $ih->submit(t('Save'), 'update_page_type', 'right', 'primary'); ?>
-		<?php  print $ih->button_js(t('Delete'), "deletePageType()", 'right', 'error'); ?>
-        <?php  print $ih->button(t('Cancel'), $this->url('/dashboard/pages/types'), 'left'); ?>
+    <div class="ccm-dashboard-header-buttons btn-group">
+        <a href="<?php echo $view->url('/dashboard/pages/types/organize')?>" class="btn btn-default"><?php echo t('Order &amp; Group')?></a>
+        <a href="<?php echo $view->url('/dashboard/pages/types/add')?>" class="btn btn-primary"><?php echo t('Add Page Type')?></a>
     </div>
-    
-    </form>
-    
-    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
-    
-    
-<?php  } else { ?>
-    <!-- START: Default Page Types pane -->
-    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Types'), false, false);?>
-	
-	<div class="clearfix">
-       <?php  print $ih->button(t('Add a Page Type'), $this->url('/dashboard/pages/types/add'), 'right'); ?>
-       <br/><br/>
-	</div>
-	
-	<?php  if (count($ctArray) == 0) { ?>
-		<br/><strong><?php echo t('No page types found.')?></strong><br/><br>
-	<?php  } else { ?>
-	
-	<table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped">
-    	<thead>
-            <tr>
-                <th width="100%"><?php echo t('Name')?></th>
-                <th><?php echo t('Handle')?></th>
-                <th><?php echo t('Package')?></th>
-                <th <?php  if ($cap->canAccessComposer()) { ?>colspan="3"<?php  } else { ?>colspan="2"<?php  } ?>></th>
-            </tr>
-		</thead>
-		<tbody>
-            <?php  foreach ($ctArray as $ct) { ?>
-            <tr>
-                <td><?php echo $ct->getCollectionTypeName()?></td>
-                <td><?php echo $ct->getCollectionTypeHandle()?></td>
-                <td><?php 
-                    $package = false;
-                    if ($ct->getPackageID() > 0) {
-                        $package = Package::getByID($ct->getPackageID());
-                    }
-                    if (is_object($package)) {
-                        print $package->getPackageName(); 
-                    } else {
-                        print t('None');
-                    }
-                    ?></td>
-                <td>
-                <?php  if ($ct->getMasterCollectionID()) {?>
-                    <?php 
-                    $tp = new TaskPermission();
-                    if ($tp->canAccessPageDefaults()) { ?>
-                        <?php  print $ih->button(t('Defaults'), $this->url('/dashboard/pages/types?cID=' . $ct->getMasterCollectionID() . '&task=load_master'), 'left','small')?>
-                    <?php  } else { 
-                        $defaultsErrMsg = t('You do not have access to page type default content.');
-                        ?>
-                        <?php  print $ih->button_js(t('Defaults'), "alert('" . $defaultsErrMsg . "')", 'left', 'small ccm-button-inactive', array('title'=>t('Lets you set default permissions and blocks for a particular page type.')) );?>
-                    <?php  } ?>
-                <?php  } ?>
-            
-                </td>
-                
-                <td><?php  print $ih->button(t('Settings'), $this->url('/dashboard/pages/types?ctID=' . $ct->getCollectionTypeID() . '&task=edit'), 'left','small')?></td>
-                <?php  if ($cap->canAccessComposer()) { ?>
-                    <td><?php  print $ih->button(t('Composer'), $this->url('/dashboard/pages/types/composer', 'view', $ct->getCollectionTypeID()), 'left', 'small')?></td>
-                <?php  } ?>	
-            </tr>
-            <?php  } ?>
-		</tbody>
+
+
+    <?php if (count($pagetypes) > 0) { ?>
+
+	<table class="table table-striped">
+	<thead>
+		<tr>
+			<th><?php echo t('Name')?></th>
+            <th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($pagetypes as $cm) {
+            $cmp = new Permissions($cm);?>
+		<tr>
+			<td class="page-type-name"><?php echo $cm->getPageTypeDisplayName()?></td>
+			<td class="page-type-tasks">
+                <?php if ($cmp->canEditPageType()) { ?>
+    				<a href="<?php echo $view->action('edit', $cm->getPageTypeID())?>" class="btn btn-default btn-xs"><?php echo t('Basic Details')?></a>
+	    			<a href="<?php echo $view->url('/dashboard/pages/types/form', $cm->getPageTypeID())?>" class="btn btn-default btn-xs"><?php echo t('Edit Form')?></a>
+		    		<a href="<?php echo $view->url('/dashboard/pages/types/output', $cm->getPageTypeID())?>" class="btn btn-default btn-xs"><?php echo t('Output')?></a>
+                    <a href="<?php echo $view->url('/dashboard/pages/types/attributes', $cm->getPageTypeID())?>" class="btn btn-default btn-xs"><?php echo t('Attributes')?></a>
+                <?php } ?>
+                <?php if ($cmp->canEditPageTypePermissions()) { ?>
+					<a href="<?php echo $view->url('/dashboard/pages/types/permissions', $cm->getPageTypeID())?>" class="btn btn-default btn-xs"><?php echo t('Permissions')?></a>
+				<?php } ?>
+                <a href="#" data-duplicate="<?php echo $cm->getPageTypeID()?>" class="btn btn-default btn-xs"><?php echo t('Copy')?></a>
+                <div style="display: none">
+                    <div data-duplicate-dialog="<?php echo $cm->getPageTypeID()?>" class="ccm-ui">
+                        <form class="form-stacked" data-duplicate-form="<?php echo $cm->getPageTypeID()?>" action="<?php echo $view->action('duplicate', $cm->getPageTypeID())?>" method="post">
+                            <div class="form-group">
+                                <label class="control-label"><?php echo t('Name')?></label>
+                                <input type="text" name="ptName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"><?php echo t('Handle')?></label>
+                                <input type="text" name="ptHandle" class="form-control">
+                            </div>
+                            <?php echo Loader::helper('validation/token')->output('duplicate_page_type')?>
+                        </form>
+                        <div class="dialog-buttons">
+                            <button onclick="jQuery.fn.dialog.closeTop()" class="btn btn-default pull-left"><?php echo t('Cancel')?></button>
+                            <button onclick="$('form[data-duplicate-form=<?php echo $cm->getPageTypeID()?>]').submit()" class="btn btn-primary pull-right"><?php echo t('Copy')?></button>
+                        </div>
+                    </div>
+                </div>
+
+                <?php if ($cmp->canDeletePageType()) { ?>
+    				<a href="#" data-delete="<?php echo $cm->getPageTypeID()?>" class="btn btn-default btn-xs btn-danger"><?php echo t('Delete')?></a>
+                <?php } ?>
+				<div style="display: none">
+					<div data-delete-dialog="<?php echo $cm->getPageTypeID()?>" class="ccm-ui">
+						<form data-delete-form="<?php echo $cm->getPageTypeID()?>" action="<?php echo $view->action('delete', $cm->getPageTypeID())?>" method="post">
+						<?php echo t("Delete this page type? This cannot be undone.")?>
+						<?php echo Loader::helper('validation/token')->output('delete_page_type')?>
+						</form>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<?php } ?>
+	</tbody>
 	</table>
-	
-	<?php  } ?>
-   
-    <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper()?>
-    
-    <!-- END: Default Page Type pane -->
-	
-<?php  } ?>
+
+	<?php } else { ?>
+		<p><?php echo t('You have not created any page types yet.')?></p>
+		<a href="<?php echo $view->url('/dashboard/pages/types/add')?>" class="btn btn-primary"><?php echo t('Add Page Type')?></a>
+	<?php } ?>
+
+	<style type="text/css">
+	td.page-type-name {
+		width: 100%;
+	}
+
+	td.page-type-tasks {
+		text-align: right !important;
+		white-space: nowrap;
+	}
+	</style>
+
+	<script type="text/javascript">
+	$(function() {
+		$('a[data-delete]').on('click', function() {
+			var ptID = $(this).attr('data-delete');
+			$('div[data-delete-dialog=' + ptID + ']').dialog({
+				modal: true,
+				width: 320,
+				dialogClass: 'ccm-ui',
+				title: '<?php echo t("Delete Page Type")?>',
+				height: 320,
+				buttons: [
+					{
+						'text': '<?php echo t("Cancel")?>',
+						'class': 'btn pull-left',
+						'click': function() {
+							$(this).dialog('close');
+						}
+					},
+					{
+						'text': '<?php echo t("Delete")?>',
+						'class': 'btn pull-right btn-danger',
+						'click': function() {
+							$('form[data-delete-form=' + ptID + ']').submit();
+						}
+					}
+				]
+			});
+		});
+        $('a[data-duplicate]').on('click', function() {
+            var ptID = $(this).attr('data-duplicate');
+            jQuery.fn.dialog.open({
+                element: 'div[data-duplicate-dialog=' + ptID + ']',
+                modal: true,
+                width: 320,
+                title: '<?php echo t("Copy Page Type")?>',
+                height: 280
+            });
+        });
+    });
+	</script>
+
+<?php } ?>

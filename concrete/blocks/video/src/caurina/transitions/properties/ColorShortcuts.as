@@ -18,7 +18,7 @@ package caurina.transitions.properties {
 	public class ColorShortcuts {
 
 		// Sources:
-		// http://www.graficaobscura.com/matrix/index.html
+		// http://www.graficaobscura.com/matrix/home.php
 		// And mario Klingemann's ColorMatrix class as mentioned on the credits:
 		// http://www.quasimondo.com/archives/000565.php
 		

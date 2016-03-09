@@ -1,5 +1,6 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
+use \Concrete\Core\Attribute\Set as AttributeSet;
 $canRead = false;
 $ch = Page::getByID($_REQUEST['cID']);
 $path = $ch->getCollectionPath();
@@ -17,7 +18,7 @@ if (!$canRead) {
 // this should be cleaned up.... yeah
 $db = Loader::db();
 // update order of collections
-Loader::model('user_attributes');
+
 $uats = $_REQUEST['akID_' . $_REQUEST['asID']];
 
 if (is_array($uats)) {

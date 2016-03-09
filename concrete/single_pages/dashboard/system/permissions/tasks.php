@@ -1,24 +1,27 @@
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-	<?php  ob_start(); ?>
+	<?php ob_start(); ?>
 	<?php echo Loader::element('permission/help');?>
-	<?php  $help = ob_get_contents(); ?>
-	<?php  ob_end_clean(); ?>
+	<?php $help = ob_get_contents(); ?>
+	<?php ob_end_clean(); ?>
 	
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Task Permissions'), $help, 'span8 offset2', false)?>
-	<form method="post" action="<?php echo $this->action('save')?>">
+	<form method="post" action="<?php echo $view->action('save')?>">
 	<?php echo Loader::helper('validation/token')->output('save_permissions')?>
-	<div class="ccm-pane-body">
-	<?php 
+	
+	<?php
 	$tp = new TaskPermission();
 	if ($tp->canAccessTaskPermissions()) { ?>	
-		<?php  Loader::element('permission/lists/miscellaneous')?>
-	<?php  } else { ?>
+		<?php Loader::element('permission/lists/miscellaneous')?>
+	<?php } else { ?>
 		<p><?php echo t('You cannot access task permissions.')?></p>
-	<?php  } ?>
-	</div>
-	<div class="ccm-pane-footer">
-		<a href="<?php echo $this->url('/dashboard/system/permissions/tasks')?>" class="btn"><?php echo t('Cancel')?></a>
-		<button type="submit" value="<?php echo t('Save')?>" class="btn primary ccm-button-right"><?php echo t('Save')?> <i class="icon-ok-sign icon-white"></i></button>
-	</div>
+	<?php } ?>
+
+	<div class="ccm-dashboard-form-actions-wrapper">
+        <div class="ccm-dashboard-form-actions">
+            <a href="<?php echo $view->url('/dashboard/system/permissions/tasks')?>" class="btn btn-default pull-left"><?php echo t('Cancel')?></a>
+            <button class="pull-right btn btn-primary" type="submit" ><?php echo t('Save')?></button>
+        </div>
+    </div>
 	</form>
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>

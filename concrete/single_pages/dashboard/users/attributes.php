@@ -1,82 +1,48 @@
-<?php  if (isset($key)) { ?>
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Edit Attribute'), false, false, false)?>
-<form method="post" action="<?php echo $this->action('edit')?>" id="ccm-attribute-key-form">
+<?php if (isset($key)) { ?>
 
+<form method="post" action="<?php echo $view->action('edit')?>" id="ccm-attribute-key-form">
 
-
-<?php  Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
+<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type, 'key' => $key)); ?>
 
 </form>
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
 
+<?php } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
 
-
-
-<?php  } else if ($this->controller->getTask() == 'select_type' || $this->controller->getTask() == 'add' || $this->controller->getTask() == 'edit') { ?>
-
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('User Attributes'), false, false, false)?>
-
-	<?php  if (isset($type)) { ?>
-		<form method="post" action="<?php echo $this->action('add')?>" id="ccm-attribute-key-form">
+	<?php if (isset($type)) { ?>
+		<form method="post" action="<?php echo $view->action('add')?>" id="ccm-attribute-key-form">
 	
-		<?php  Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
+		<?php Loader::element("attribute/type_form_required", array('category' => $category, 'type' => $type)); ?>
 	
 		</form>	
-	<?php  } ?>
-	
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
+	<?php } ?>
 
+<?php } else {
 
-
-<?php  } else { ?>
-
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('User Attributes'), false, false, false)?>
-
-	<?php 
 	$attribs = UserAttributeKey::getList();
-	Loader::element('dashboard/attributes_table', array('category' => $category, 'attribs'=> $attribs, 'editURL' => '/dashboard/users/attributes')); ?>
+	Loader::element('dashboard/attributes_table', array(
+        'types' => $types,
+        'category' => $category,
+        'attribs'=> $attribs,
+        'editURL' => '/dashboard/users/attributes',
+        'sortable' => true
+        ));
+} ?>
 
-
-	<div class="ccm-pane-body ccm-pane-body-footer" style="margin-top: -25px">
-
-	<form method="get" class="form-stacked inline-form-fix" action="<?php echo $this->action('select_type')?>" id="ccm-attribute-type-form">
-	<div class="clearfix">
-	<?php echo $form->label('atID', t('Add Attribute'))?>
-	<div class="input">
-	
-	<?php echo $form->select('atID', $types)?>
-	<?php echo $form->submit('submit', t('Add'))?>
-	
-	</div>
-	</div>
-	
-	</form>
-
-	</div>
-	
-	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false);?>
-
-<?php  } ?>
 
 <script type="text/javascript">
-$(function() {
-	$("div.ccm-attributes-list").sortable({
-		handle: 'img.ccm-attribute-icon',
-		cursor: 'move',
-		opacity: 0.5,
-		stop: function() {
-			var ualist = $(this).sortable('serialize');
-			$.post('<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/dashboard/user_attributes_update.php', ualist, function(r) {
-
-			});
-		}
-	});
-});
-
+    $(function() {
+        $("ul.ccm-sortable-attribute-list-wrapper").sortable({
+            handle: 'i.ccm-item-select-list-sort',
+            cursor: 'move',
+            opacity: 0.5,
+            stop: function() {
+                var ualist = $(this).sortable('serialize');
+                ualist += '&ccm_token=' + '<?php echo $controller->token->generate('attribute_sort')?>';
+                $.post('<?php echo URL::to('/ccm/system/attribute/attribute_sort/user')?>', ualist, function(r) {});
+            }
+        });
+    });
 </script>
-
-<style type="text/css">
-div.ccm-attributes-list img.ccm-attribute-icon:hover {cursor: move}
-</style>

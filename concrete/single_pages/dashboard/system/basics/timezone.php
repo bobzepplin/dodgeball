@@ -1,31 +1,57 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 // Helpers
-$h = Loader::helper('concrete/interface');
+$h = Loader::helper('concrete/ui');
 $d = Loader::helper('concrete/dashboard');
 ?>
 
-<?php  print $d->getDashboardPaneHeaderWrapper(t('Timezone'), false, 'span8 offset2', false); ?>
+<form method="post" id="user-timezone-form" action="<?php echo $view->action('update') ?>">
 
-<form method="post" id="user-timezone-form" action="<?php  echo $this->action('update') ?>" class="form-horizontal">
+    <?php echo $this->controller->token->output('update_timezone') ?>
 
-     <?php  echo $this->controller->token->output('update_timezone')?>
-     
-    <div class="ccm-pane-body">
-    
-    	<div class="control-group">
-            <label class="checkbox">
-                <input type="checkbox" name="user_timezones" value="1" <?php  if ($user_timezones) { ?> checked <?php  } ?> />
-                <span><?php  echo t('Enable user defined time zones.') ?></span>
+    <div class="alert alert-info"><?php echo t(
+            'With this setting enabled, users may specify their own time zone in their user profile, and content timestamps will be adjusted accordingly. Without this setting enabled, content timestamps appear in server time.') ?></div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="user_timezones"
+                       value="1" <?php if ($user_timezones) { ?> checked <?php } ?> />
+                <?php echo t('Enable user defined time zones.') ?>
             </label>
         </div>
-        
     </div>
-     
-     <div class="ccm-pane-footer">
-          <?php  print $interface->submit(t('Save'), 'user-timezone-form', 'right', 'primary'); ?>
-     </div>
-     
-</form>
 
-<?php  print $d->getDashboardPaneFooterWrapper(false); ?>
+    <div class="form-group">
+        <label class="control-label">
+            <?php echo t('Server Timezone:') ?>
+        </label>
+        <select class="form-control" name="timezone">
+            <?php
+            foreach ($timezones as $zone => $tzg) {
+                ?>
+                <optgroup label="<?php echo h($zone) ?>">
+                    <?php
+                    foreach ($tzg as $tz) {
+                        ?>
+                        <option value="<?php echo h($tz) ?>"
+                            <?php echo strtolower($tz) === strtolower($timezone) ? 'selected' : '' ?>>
+                            <?php echo h($tz) ?>
+                        </option>
+                    <?php
+                    }
+                    ?>
+                </optgroup>
+            <?php
+            }
+            ?>
+        </select>
+    </div>
+
+    <div class="ccm-dashboard-form-actions-wrapper">
+        <div class="ccm-dashboard-form-actions">
+            <?php print $interface->submit(t('Save'), 'user-timezone-form', 'right', 'btn-primary'); ?>
+        </div>
+    </div>
+
+</form>

@@ -1,6 +1,8 @@
+<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('System &amp; Settings'));?>
 <form>
-<?php 
+<?php
 foreach($categories as $cat) { ?>
 
 	<div class="page-header">
@@ -9,7 +11,7 @@ foreach($categories as $cat) { ?>
 	</h3>
 	</div>
 	
-	<?php 
+	<?php
 	$show = array();
 	$subcats = $cat->getCollectionChildrenArray(true);
 	foreach($subcats as $catID) {
@@ -24,18 +26,18 @@ foreach($categories as $cat) { ?>
 	
 	<div class="clearfix">
 	
-	<?php  foreach($show as $subcat) { ?>
+	<?php foreach($show as $subcat) { ?>
 	
 	<div class="span4">
 		<a href="<?php echo Loader::helper('navigation')->getLinkToCollection($cat)?>"><?php echo $subcat->getCollectionName()?></a>
 	</div>
 	
-	<?php  } ?>
+	<?php } ?>
 	
 	</div>
 	
-	<?php  } ?>
+	<?php } ?>
 
-<?php  } ?>
+<?php } ?>
 </form>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

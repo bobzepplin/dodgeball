@@ -1,0 +1,124 @@
+#GeneralWrapper {
+  header {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 15;
+    overflow: hidden;
+    background: -moz-linear-gradient(top, #FFBF00 0%, #FD4600 100%);
+    background: -webkit-linear-gradient(top, #FFBF00 0%, #FD4600 100%);
+    background: linear-gradient(to bottom, #FFBF00 0%, #FD4600 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ed9017', endColorstr='#f56e00',GradientType=0 );
+
+    .logo {
+      width: 180px;
+      float: left;
+      img{
+        width: 100%;
+        height: auto;
+      }
+    }
+    .visuel {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      .header_main_visuel {
+        display: table;
+        width: 70%;
+        margin: 0 auto;
+        height: 100%;
+        .header_main_visuel_wrapper {
+          display: table-cell;
+          vertical-align: middle;
+          img {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+  &.inpage{
+    height: auto;
+    width: auto;
+    position: inherit;
+    .visuel {
+      height: auto;
+      position: relative;
+      width: auto;
+      .header_main_visuel {
+        display: block;
+        width: auto;
+        height: auto;
+        .header_main_visuel_wrapper {
+          display: block;
+          vertical-align: inherit;
+          img{
+            max-width: 100%;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+  }
+
+    .next-slide {
+      text-align: center;
+      color: white;
+      z-index: 5;
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      @include transition(all, 1s, ease);
+      transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      opacity: 1;
+
+      animation: bounce 0.6s ease infinite alternate;
+      -webkit-animation: bounce 0.6s ease infinite alternate;
+
+      @keyframes bounce{
+           from {bottom: 5%;}
+           to   {bottom: 6%;}
+      }
+      @-webkit-keyframes bounce{
+           from {bottom: 5%;}
+           to   {bottom: 6%;}
+      }
+
+      i {
+        color: white;
+        font-size: ms(10);
+        cursor: pointer;
+      }
+
+      &.hideslide{
+        bottom: -10%;
+      }
+    }
+
+    .top_header {
+      position: relative;
+      z-index: 5;
+      padding-top: 20px;
+
+
+      .menu-mobile {
+        float: right;
+
+        @include breakpoint($xs) {
+          display: none;
+        }
+
+        i {
+          color: white;
+          font-size: ms(7);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

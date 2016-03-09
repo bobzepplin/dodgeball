@@ -1,30 +1,38 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
+use \Concrete\Core\File\EditResponse as FileEditResponse;
 $u = new User();
 $form = Loader::helper('form');
+$dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service\Date */
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
-	die(t("Access Denied."));
+	die(t("Unable to access the file manager."));
 }
 
-if ($_POST['task'] == 'delete_files') {
-	$json['error'] = false;
-	
-	if (is_array($_POST['fID'])) {
-		foreach($_POST['fID'] as $fID) {
-			$f = File::getByID($fID);
-			$fp = new Permissions($f);
-			if ($fp->canDeleteFile()) {
-				$f->delete();
-			} else {
-				$json['error'] = t('Unable to delete one or more files.');
-			}
-		}
-	}
+$token_validator = \Core::make('helper/validation/token');
 
-	$js = Loader::helper('json');
-	print $js->encode($json);
-	exit;
+if ($_POST['task'] == 'delete_files') {
+    $fr = new FileEditResponse();
+    if ($token_validator->validate('files/delete')) {
+        $files = array();
+        if (is_array($_POST['fID'])) {
+            foreach ($_POST['fID'] as $fID) {
+                $f = File::getByID($fID);
+                $fp = new Permissions($f);
+                if ($fp->canDeleteFile()) {
+                    $files[] = $f;
+                    $f->delete();
+                } else {
+                    throw new Exception(t('Unable to delete one or more files.'));
+                }
+            }
+        }
+
+        $fr->setMessage(t2('%s file deleted successfully.', '%s files deleted successfully.', count($files)));
+    } else {
+        $fr->setError(new \Exception('Invalid Token'));
+    }
+    $fr->outputJSON();
 }
 
 $form = Loader::helper('form');
@@ -39,63 +47,70 @@ if (is_array($_REQUEST['fID'])) {
 }
 
 $fcnt = 0;
-foreach($files as $f) { 
+foreach($files as $f) {
 	$fp = new Permissions($f);
 	if ($fp->canDeleteFile()) {
 		$fcnt++;
 	}
 }
 
-$searchInstance = Loader::helper('text')->entities($_REQUEST['searchInstance']);
-
 ?>
 
 <div class="ccm-ui">
 <br/>
-<?php  if ($fcnt == 0) { ?>
+<?php if ($fcnt == 0) { ?>
 	<p><?php echo t("You do not have permission to delete any of the selected files."); ?><p>
-<?php  } else { ?>
+<?php } else { ?>
 
-	<p><?php echo t('Are you sure you want to delete the following files?')?></p>
+	<div class="alert alert-warning"><?php echo t('Are you sure you want to delete the following files?')?></div>
 
-	<form id="ccm-<?php echo $searchInstance?>-delete-form" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
+	<form data-dialog-form="delete-file" method="post" action="<?php echo REL_DIR_FILES_TOOLS_REQUIRED?>/files/delete">
+        <?php echo $token_validator->output('files/delete') ?>
 	<?php echo $form->hidden('task', 'delete_files')?>
-	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-bordered">
-	
-	<?php  foreach($files as $f) { 
+	<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table table-striped">
+
+	<?php foreach($files as $f) {
 		$fp = new Permissions($f);
 		if ($fp->canDeleteFile()) {
 			$fv = $f->getApprovedVersion();
 			if (is_object($fv)) { ?>
-			
-			<?php echo $form->hidden('fID[]', $f->getFileID())?>		
-			
+
+			<?php echo $form->hidden('fID[]', $f->getFileID())?>
+
 			<tr>
 				<td><?php echo $fv->getType()?></td>
-				<td class="ccm-file-list-filename" width="100%"><div style="word-wrap: break-word; width: 150px"><?php echo $fv->getTitle()?></div></td>
-				<td><?php echo date(DATE_APP_DASHBOARD_SEARCH_RESULTS_FILES, strtotime($f->getDateAdded()))?></td>
+				<td class="ccm-file-list-filename" width="100%"><div style="word-wrap: break-word; width: 150px"><?php echo h($fv->getTitle())?></div></td>
+				<td><?php echo $dh->formatDateTime($f->getDateAdded()->getTimestamp())?></td>
 				<td><?php echo $fv->getSize()?></td>
 				<td><?php echo $fv->getAuthorName()?></td>
 			</tr>
-			
-			<?php  }
+
+			<?php }
 		}
-		
+
 	} ?>
 	</table>
 	</form>
-	<br/>
-	
-	<?php  $ih = Loader::helper('concrete/interface')?>
+
 	<div class="dialog-buttons">
-	<?php echo $ih->button_js(t('Delete'), 'ccm_alDeleteFiles(\'' . $searchInstance . '\')', 'right', 'error')?>
-	<?php echo $ih->button_js(t('Cancel'), 'jQuery.fn.dialog.closeTop()', 'left')?>	
+	<button class="btn btn-default pull-left" data-dialog-action="cancel"><?php echo t('Cancel')?></button>
+	<button type="button" data-dialog-action="submit" class="btn btn-danger pull-right"><?php echo t('Delete')?></button>
 	</div>
-	
+
 </div>
-		
-	<?php 
-	
+
+	<script type="text/javascript">
+	$(function() {
+		ConcreteEvent.subscribe('AjaxFormSubmitSuccess', function(e, data) {
+			if (data.form == 'delete-file') {
+				ConcreteEvent.publish('FileManagerDeleteFilesComplete', {files: data.response.files});
+			}
+		});
+	});
+	</script>
+
+	<?php
+
 }
-	
-	
+
+

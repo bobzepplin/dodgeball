@@ -1,0 +1,90 @@
+html {
+  font-size: 1em;
+  color: $base;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  line-height: ms(6);
+  -webkit-font-smoothing: antialiased;
+
+  @include breakpoint($xl) {
+    font-size: ms(0)*.9;
+  }
+
+  @include breakpoint($lg) {
+    font-size: ms(0)*.8;
+  }
+
+  @include breakpoint($md) {
+    font-size: ms(0)*.8;
+  }
+
+  @include breakpoint($sm) {
+    font-size: ms(0)*.75;
+  }
+
+  @include breakpoint($xs) {
+    font-size: ms(0)*.7;
+  }
+
+}
+
+h1, h2, h3, h4, h5{
+  font-family: 'Abril Fatface', cursive;
+  margin: 0;
+}
+
+p, span{
+  font-size: ms(1);
+  color: $base;
+}
+
+
+em{
+  color: #999;
+}
+
+b, strong{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+
+}
+
+h1 {
+   font-size: ms(10);
+}
+
+h2 {
+   font-size: ms(9);
+
+  @include breakpoint($lg) {
+    font-size: ms(9)*.95;
+  }
+
+  @include breakpoint($lg) {
+    font-size: ms(9)*.85;
+  }
+  @include breakpoint($md) {
+    font-size: ms(9)*.85;
+  }
+  @include breakpoint($sm) {
+    font-size: ms(9)*.8;
+  }
+}
+
+h3 {
+  font-size: ms(4);
+  line-height: ms(4);
+
+  @include breakpoint($md) {
+    font-size: ms(3);
+  }
+}
+
+h4 {
+  font-family: 'Roboto', sans-serif;
+  font-size: ms(2);
+}
+
+small {
+  font-size: ms(-1);
+}

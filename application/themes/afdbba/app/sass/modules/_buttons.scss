@@ -1,0 +1,29 @@
+.button, .btn{
+  margin: 1.5em 0;
+  cursor: pointer;
+  background: $grey;
+  display: inline-block;
+  padding: 1em;
+  color: $white;
+  border: none;
+  &.primary{
+    background: $clientcolor;
+    color: $white;
+  }
+  &.calltoaction{
+    background: $clientcolor;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $white;
+  }
+  &.small{
+    font-size: 0.8em;
+    border-radius: 2px;
+    padding: 0.5em 1.5em;
+    &:hover{
+      color: #fff;
+      background: $clientcolor;
+    }
+  }
+}

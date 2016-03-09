@@ -1,22 +1,22 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
-global $c; ?>
+?>
 
 <a name="_edit<?php echo $b->getBlockID()?>"></a>
 
-<?php  $bt = $b->getBlockTypeObject(); ?>
+<?php $bt = $b->getBlockTypeObject(); ?>
 
 <script type="text/javascript">
 
-<?php  $ci = Loader::helper("concrete/urls"); ?>
-<?php  $url = $ci->getBlockTypeJavaScriptURL($bt); 
+<?php $ci = Loader::helper("concrete/urls"); ?>
+<?php $url = $ci->getBlockTypeJavaScriptURL($bt);
 if ($url != '') { ?>
 	ccm_addHeaderItem("<?php echo $url?>", 'JAVASCRIPT');
-<?php  } 
+<?php }
 
 $identifier = strtoupper('BLOCK_CONTROLLER_' . $btHandle);
 if (is_array($headerItems[$identifier])) {
-	foreach($headerItems[$identifier] as $item) { 
+	foreach($headerItems[$identifier] as $item) {
 		if ($item instanceof CSSOutputObject) {
 			$type = 'CSS';
 		} else {
@@ -24,58 +24,57 @@ if (is_array($headerItems[$identifier])) {
 		}
 		?>
 		ccm_addHeaderItem("<?php echo $item->file?>", '<?php echo $type?>');
-	<?php 
+	<?php
 	}
 }
 ?>
 $(function() {
-	$('#ccm-block-form').each(function() {
-		<?php  if (is_object($b->getProxyBlock())) { ?>
-			ccm_setupBlockForm($(this), '<?php echo $b->getProxyBlock()->getBlockID()?>', 'edit');
-		<?php  } else { ?>
-			ccm_setupBlockForm($(this), '<?php echo $b->getBlockID()?>', 'edit');
-		<?php  } ?>
+	$('#ccm-block-form').concreteAjaxBlockForm({
+		'task': 'edit',
+		'bID': <?php if (is_object($b->getProxyBlock())) { ?><?php echo $b->getProxyBlock()->getBlockID()?><?php } else { ?><?php echo $b->getBlockID()?><?php } ?>,
+		<?php if ($bt->supportsInlineEdit()) { ?>
+			btSupportsInlineEdit: true,
+		<?php } else { ?>
+			btSupportsInlineEdit: false
+		<?php } ?>
 	});
 });
 </script>
 
-<?php 
-$hih = Loader::helper("concrete/interface/help");
-$blockTypes = $hih->getBlockTypes();
+<?php
 $cont = $bt->getController();
 if ($b->getBlockTypeHandle() == BLOCK_HANDLE_SCRAPBOOK_PROXY) {
 	$bx = Block::getByID($b->getController()->getOriginalBlockID());
 	$cont = $bx->getController();
 }
 
-if (isset($blockTypes[$bt->getBlockTypeHandle()])) {
-	$help = $blockTypes[$bt->getBlockTypeHandle()];
-} else {
-	if ($cont->getBlockTypeHelp()) {
-		$help = $cont->getBlockTypeHelp();
-	}
+$hih = Core::make("help/block_type");
+$message = $hih->getMessage($bt->getBlockTypeHandle());
+
+if (!$message && $cont->getBlockTypeHelp()) {
+	$message = new \Concrete\Core\Application\Service\UserInterface\Help\Message();
+	$message->setIdentifier($bt->getBlockTypeHandle());
+	$message->setMessageContent($cont->getBlockTypeHelp());
 }
-if (isset($help)) { ?>
-	<div class="dialog-help" id="ccm-menu-help-content"><?php  
-		if (is_array($help)) { 
-			print $help[0] . '<br><br><a href="' . $help[1] . '" class="btn small" target="_blank">' . t('Learn More') . '</a>';
-		} else {
-			print $help;
-		}
-	?></div>
-<?php  } ?>
 
-<?php  if ($cont->getBlockTypeWrapperClass() != '') { ?>
-	<div class="<?php echo $cont->getBlockTypeWrapperClass();?>">
-<?php  } ?>
+if (isset($message) && is_object($message) && !$bt->supportsInlineEdit()) { ?>
+	<div class="dialog-help" id="ccm-menu-help-content"><?php print $message->getContent() ?></div>
+<?php } ?>
 
-<form method="post" id="ccm-block-form" class="validate form-horizontal" action="<?php echo $b->getBlockEditAction()?>&rcID=<?php echo intval($rcID)?>" enctype="multipart/form-data">
+<div <?php if (!$bt->supportsInlineEdit()) { ?>class="ccm-ui"<?php } else { ?>data-container="inline-toolbar"<?php } ?>>
 
-<input type="hidden" name="ccm-block-form-method" value="REGULAR" />
+<form method="post" id="ccm-block-form" class="validate" action="<?php echo $dialogController->action('submit')?>" enctype="multipart/form-data">
 
-<?php  foreach($this->controller->getJavaScriptStrings() as $key => $val) { ?>
-	<input type="hidden" name="ccm-string-<?php echo $key?>" value="<?php echo $val?>" />
-<?php  } ?>
+<?php foreach($this->controller->getJavaScriptStrings() as $key => $val) { ?>
+	<input type="hidden" name="ccm-string-<?php echo $key?>" value="<?php echo h($val)?>" />
+<?php } ?>
 
-
+<?php if (!$bt->supportsInlineEdit()) { ?>
 <div id="ccm-block-fields">
+<?php } else {
+	$css = $b->getCustomStyle();
+?>
+
+	<div <?php if (is_object($css) && $b->getBlockTypeHandle() != BLOCK_HANDLE_LAYOUT_PROXY) { ?>class="<?php echo $css->getContainerClass() ?>" <?php } ?>>
+
+<?php } ?>

@@ -1,9 +1,9 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 
 $subject = t('Private message from %s', $msgAuthor);
 
-$body .= t("A message has been sent to you by %s through your profile on %s", $msgAuthor, SITE);
+$body .= t("A message has been sent to you by %s through your profile on %s", $msgAuthor, $siteName);
 $body .= "\n\n";
 $body .= t("Subject: %s", $msgSubject);
 $body .= "\n\n";

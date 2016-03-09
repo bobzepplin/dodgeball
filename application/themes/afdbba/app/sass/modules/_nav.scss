@@ -1,0 +1,224 @@
+.open-menu-fix{
+  @include transition(all, .6s, ease);
+  position: fixed;
+  top: 10%;
+  right: 0;
+  cursor: pointer;
+  z-index: 12;
+  background: white;
+  padding: 8px 15px 5px;
+  text-align: center;
+  border-radius: 5px 0 0 5px;
+
+  @include breakpoint($xs) {
+    z-index: 20;
+    top: 50px;
+  }
+
+  &.hideme{
+    right: -35%;
+  }
+
+  i{
+    font-size: ms(7);
+    color: $base;
+  }
+}
+
+.menu{
+  @include transition(all, .6s, ease);
+
+  width: 0;
+  position: fixed;
+  z-index: 30;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background: #fff;
+  white-space: nowrap;
+
+  //background-image: url(../../dist/img/logoback.jpg);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 515px;
+
+  @include breakpoint($md) {
+    right: 0;
+    background: rgba(255, 255, 255, .9);
+    text-align: center;
+    opacity: 0;
+  }
+
+  img{
+    width: 150px;
+  }
+
+  &.actif{
+    width: 20%;
+
+    @include breakpoint($xl) {
+      width: 25%;
+    }
+
+    @include breakpoint($lg) {
+      width: 33%;
+    }
+
+    @include breakpoint($md) {
+      opacity: 1;
+      width: 100%;
+      background: rgba(255, 255, 255, .9);
+      text-align: center;
+      display: table;
+    }
+  }
+
+  .main-menu{
+    padding: 80px;
+    box-sizing: border-box;
+    position: relative;
+
+    @include breakpoint($xl) {
+      padding: 40px;
+    }
+
+    @include breakpoint($md) {
+      display: table-cell;
+      vertical-align: middle;
+
+    }
+
+    hr{
+      width: 80px;
+      display: table-caption;
+      border-color: $base;
+      margin: 30px 0;
+      border-color: #5a6265;
+
+      @include breakpoint($md) {
+        margin: 20px auto;
+        display: block;
+      }
+    }
+
+    .close-menu{
+      position: absolute;
+      top: 40px;
+      font-size: ms(4);
+      right: 40px;
+      cursor: pointer;
+      @include transition(all, 1s, ease);
+      color: $base;
+
+      @include breakpoint($lg) {
+        top: 20px;
+        right: 20px;
+      }
+
+      @include breakpoint($md) {
+        font-size: ms(8);
+        top: 50px;
+        right: 50px;
+      }
+      @include breakpoint($xs) {
+        top: 20px;
+        right: 20px;
+      }
+
+      &:hover{
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+      }
+    }
+
+    b{
+      color: #5a6265;
+    }
+
+    h2{
+      font-weight: bold;
+      font-size: ms(2);
+      color: #5a6265;
+      margin: 35px 0 15px;
+
+      @include breakpoint($md) {
+        font-size: ms(3);
+        margin: 35px 0 20px;
+      }
+    }
+
+    b{
+      font-weight: bold;
+      font-size: ms(5);
+
+      @include breakpoint($md) {
+        font-size: ms(8);
+      }
+    }
+
+    nav{
+      ul{
+        padding: 0;
+        margin: 0;
+        li{
+          list-style-type: none;
+          a{
+            color: #5a6265;
+            @include transition(all, .6s, ease);
+            font-size: ms(-1);
+            background-image: url('../../dist/img/traitmenu.jpg');
+            background-repeat: no-repeat;
+            background-position: left -100px center;
+            text-transform: uppercase;
+
+
+
+            @include breakpoint($lg) {
+              font-size: ms(1);
+              line-height: ms(2);
+            }
+
+            @include breakpoint($md) {
+              background-image: none;
+              font-size: ms(2);
+              line-height: ms(4);
+            }
+
+            &:hover{
+              color: $clientcolor;
+              padding: 0 0 0 18px;
+              background-position: left -35px center;
+
+              @include breakpoint($md) {
+                padding: 0;
+              }
+
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.cache-menu-actif{
+  @include transition(all, .6s, ease);
+
+  height: 100%;
+  cursor: pointer;
+  position: fixed;
+  z-index: 15;
+  top: 0;
+  left: 0;
+  width: 0;
+  background: rgba(0, 0, 0, .5);
+
+  @include breakpoint($md) {
+    display: none;
+  }
+
+  &.cache-actif{
+    width: 100%;
+  }
+}

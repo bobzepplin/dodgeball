@@ -1,6 +1,4 @@
-<?php  
-defined('C5_EXECUTE') or die(_("Access Denied."));
-$bObj=$controller;
+<?php
+defined('C5_EXECUTE') or die("Access Denied.");
 ?>
-
-<?php  $this->inc('form_setup_html.php', array('bObj' => $bObj)); ?> 
+<?php $this->inc('form_setup_html.php'); ?>

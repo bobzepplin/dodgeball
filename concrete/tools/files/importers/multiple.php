@@ -1,9 +1,8 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $jsh = Loader::helper("json");
 $cf = Loader::helper("file");
 $valt = Loader::helper('validation/token');
-Loader::library("file/importer");
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAddFiles()) {
 	$error = FileImporter::getErrorMessage(FileImporter::E_PHP_FILE_ERROR_DEFAULT);
@@ -25,7 +24,7 @@ if ($valt->validate('upload')) {
 			$fi = new FileImporter();
 			$resp = $fi->import($_FILES['Filedata']['tmp_name'], $_FILES['Filedata']['name'], $fr);
 		}
-		if (!($resp instanceof FileVersion)) {
+		if (!($resp instanceof \Concrete\Core\File\Version)) {
 			$errorCode = $resp;
 		} else if (!is_object($fr)) {
 			// we check $fr because we don't want to set it if we are replacing an existing file

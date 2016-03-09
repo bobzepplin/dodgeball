@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_write_close();
 
 defined('C5_EXECUTE') or die("Access Denied.");

@@ -1,39 +1,45 @@
-<?php 
-defined('C5_EXECUTE') or die("Access Denied.");
-$ih = Loader::helper('image');
+<?php defined('C5_EXECUTE') or die("Access Denied.");
+$nh = Loader::helper('navigation');
+$previousLinkURL = is_object($previousCollection) ? $nh->getLinkToCollection($previousCollection) : '';
+$parentLinkURL = is_object($parentCollection) ? $nh->getLinkToCollection($parentCollection) : '';
+$nextLinkURL = is_object($nextCollection) ? $nh->getLinkToCollection($nextCollection) : '';
+$previousLinkText = is_object($previousCollection) ? $previousCollection->getCollectionName() : '';
+$nextLinkText = is_object($nextCollection) ? $nextCollection->getCollectionName() : '';
 ?>
 
-<div id="ccm-next-previous-<?php  echo intval($bID)?>" class="ccm-next-previous-wrapper">
+<?php if ($previousLinkURL || $nextLinkURL || $parentLinkText): ?>
 
-    <?php   if( strlen($previousLinkText) > 0){ ?>
-      <div class="ccm-next-previous-previouslink">
-        <?php   if( is_object($previousCollection) ){ ?>
-          <a href="<?php  echo Loader::helper('navigation')->getLinkToCollection($previousCollection)?>"><?php  echo $previousLinkText ?></a>
-        <?php   } else { ?>
-          &nbsp;
-        <?php   } ?>
-      </div>
-    <?php  } ?>
+<div class="ccm-block-next-previous-wrapper">
+    <?php if ($previousLabel && $previousLinkURL != ''): ?>
+    <div class="ccm-block-next-previous-header">
+        <h5><?php echo $previousLabel?></h5>
+    </div>
+    <?php endif; ?>
 
-    <?php   if( strlen($parentLinkText) > 0){ ?>
-      <div class="ccm-next-previous-parentlink">
-        <?php   if( is_object($parentCollection) && $parentLinkText){ ?>
-          <a href="<?php  echo Loader::helper('navigation')->getLinkToCollection($parentCollection)?>"><?php  echo $parentLinkText ?></a>
-        <?php   } else { ?>
-          &nbsp;
-        <?php   } ?>
-      </div>
-    <?php  } ?>
+    <?php if ($previousLinkText): ?>
+	<p class="ccm-block-next-previous-previous-link">
+		<?php echo $previousLinkURL ? '<a href="' . $previousLinkURL . '">' . $previousLinkText . '</a>' : '' ?>
+ 	</p>
+	<?php endif; ?>
 
-    <?php   if( strlen($nextLinkText) > 0){ ?>
-      <div class="ccm-next-previous-nextlink">
-        <?php   if( is_object($nextCollection) ){ ?>
-          <a href="<?php  echo Loader::helper('navigation')->getLinkToCollection($nextCollection)?>"><?php  echo $nextLinkText ?></a>
-        <?php   } else { ?>
-          &nbsp;
-        <?php   } ?>
-      </div>
-    <?php  } ?>
+    <?php if ($nextLabel && $nextLinkURL != ''): ?>
+        <div class="ccm-block-next-previous-header">
+            <h5><?php echo $nextLabel?></h5>
+        </div>
+    <?php endif; ?>
 
-    <div class="spacer"></div>
+    <?php if ($nextLinkText): ?>
+        <p class="ccm-block-next-previous-next-link">
+            <?php echo $nextLinkURL ? '<a href="' . $nextLinkURL . '">' . $nextLinkText . '</a>' : '' ?>
+        </p>
+    <?php endif; ?>
+
+    <?php if ($parentLinkText): ?>
+	<p class="ccm-block-next-previous-parent-link">
+		<?php echo $parentLinkURL ? '<a href="' . $parentLinkURL . '">' . $parentLinkText . '</a>' : '' ?>
+ 	</p>
+	<?php endif; ?>
+
 </div>
+
+<?php endif; ?>

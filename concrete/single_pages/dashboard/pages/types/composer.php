@@ -1,11 +1,11 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
-<?php  
+<?php 
 $form = Loader::helper('form');
 $html = Loader::helper('html');
-$ih = Loader::helper('concrete/interface');
+$ih = Loader::helper('concrete/ui');
 $cap = Loader::helper('concrete/dashboard');
 $ctArray = CollectionType::getList();
 ?>
@@ -14,14 +14,15 @@ $ctArray = CollectionType::getList();
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Composer Settings'), false, false, false);?>
 
-<?php  
+<?php 
 if ($cap->canAccessComposer()) { ?>
 
-	<form class="form-vertical" method="post" action="<?php echo $this->action('save')?>">
+	<form class="form-vertical" method="post" action="<?php echo $view->action('save')?>">
 
 	<div class="ccm-pane-body">
 	<?php echo $form->hidden('ctID', $ct->getCollectionTypeID()); ?>
     
+        <h3><?php echo t("Page type").': '.$ct->getCollectionTypeName()?></h3>
         <table class="table" cellspacing="0" cellpadding="0" border="0">
             <thead>
                 <tr>
@@ -61,7 +62,7 @@ if ($cap->canAccessComposer()) { ?>
                         </label>
             
                         <div style="display: none; padding: 10px" id="ccm-composer-choose-parent-page-type">
-                            <?php 
+                            <?php
                             $types = array();
                             foreach($ctArray as $cta) {
                                 $types[$cta->getCollectionTypeID()] = $cta->getCollectionTypeName();
@@ -76,7 +77,7 @@ if ($cap->canAccessComposer()) { ?>
                         </label>
                         
                         <div style="display: none; padding: 10px" id="ccm-composer-choose-parent">
-							<?php  
+							<?php 
                             $pf = Loader::helper('form/page_selector');
                             print $pf->selectPage('ctComposerPublishPageParentID', $ct->getCollectionTypeComposerPublishPageParentID());
                             ?>
@@ -94,7 +95,7 @@ if ($cap->canAccessComposer()) { ?>
                 </tr>
 			</thead>
 			<tbody>
-                <?php 
+                <?php
                     $selectedAttributes = array();
                     $cpattribs = $ct->getComposerAttributeKeys();
                     foreach($cpattribs as $cpa) {
@@ -106,20 +107,20 @@ if ($cap->canAccessComposer()) { ?>
                     foreach($attribs as $ak) { 
                     if ($i == 0) { ?>
                         <tr class="row-composer inputs-list">
-                    <?php  } ?>
+                    <?php } ?>
                     
                     	<td width="33%">
                             <label>
                                 <?php echo $form->checkbox('composerAKID[]', $ak->getAttributeKeyID(), in_array($ak->getAttributeKeyID(), $selectedAttributes))?>
-                                <span><?php echo $ak->getAttributeKeyName()?></span>
+                                <span><?php echo $ak->getAttributeKeyDisplayName()?></span>
                             </label>
                         </td>
                     
-                    <?php  $i++;
+                    <?php $i++;
                     
                     if ($i == 3) { ?>
                     </tr>
-                    <?php  
+                    <?php 
                     $i = 0;
                     }
                     
@@ -128,9 +129,9 @@ if ($cap->canAccessComposer()) { ?>
                 if ($i < 3 && $i > 0) {
                     for ($j = $i; $j < 3; $j++) { ?>
                         <td>&nbsp;</td>
-                    <?php  }
+                    <?php }
                 ?></tr>
-                <?php  } ?>
+                <?php } ?>
 			</tbody>
 		</table>
                 
@@ -145,7 +146,7 @@ if ($cap->canAccessComposer()) { ?>
                     <td>
                         <div class="ccm-composer-content-item-list">
                         
-                        <?php 
+                        <?php
                         $cur = Loader::helper('concrete/urls');
                                     
                         foreach($contentitems as $ci) { 
@@ -154,25 +155,25 @@ if ($cap->canAccessComposer()) { ?>
                             ?>
                         
                         <div class="ccm-composer-content-item" id="item_akID<?php echo $ak->getAttributeKeyID()?>">
-                            <img class="ccm-composer-content-item-icon" src="<?php echo $ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><?php echo $ak->getAttributeKeyName()?>
+                            <img class="ccm-composer-content-item-icon" src="<?php echo $ak->getAttributeKeyIconSRC()?>" width="16" height="16" /><?php echo $ak->getAttributeKeyDisplayName()?>
                         </div>
                 
-                            <?php  } else if ($ci instanceof Block) { 
+                            <?php } else if ($ci instanceof Block) { 
                                 $b = $ci; ?>
             
                             
                         <div class="ccm-composer-content-item" id="item_bID<?php echo $b->getBlockID()?>">
-                            <img class="ccm-composer-content-item-icon" src="<?php echo $cur->getBlockTypeIconURL($b)?>" width="16" height="16" /><?php 
+                            <img class="ccm-composer-content-item-icon" src="<?php echo $cur->getBlockTypeIconURL($b)?>" width="16" height="16" /><?php
                                 if ($b->getBlockName()) {
                                     print $b->getBlockName();
                                 } else {
-                                    print $b->getBlockTypeName();
+                                    print t($b->getBlockTypeName());
                                 }
                             ?>
                         </div>
-                            <?php  } ?>
+                            <?php } ?>
             
-                        <?php  } ?>
+                        <?php } ?>
                         
                         </div>
                     </td>
@@ -183,8 +184,8 @@ if ($cap->canAccessComposer()) { ?>
 	</div>
     
     <div class="ccm-pane-footer">
-        <?php  print $ih->submit(t('Save'), 'update', 'right', 'primary'); ?>
-        <?php  print $ih->button(t('Back to Page Types'), $this->url('/dashboard/pages/types'), 'left'); ?>
+        <?php print $ih->submit(t('Save'), 'update', 'right', 'primary'); ?>
+        <?php print $ih->button(t('Back to Page Types'), $view->url('/dashboard/pages/types'), 'left'); ?>
     </div>
     
 	</form>
@@ -219,7 +220,7 @@ if ($cap->canAccessComposer()) { ?>
 			opacity: 0.5,
 			stop: function() {
 				var ualist = $(this).sortable('serialize');
-				$.post('<?php echo $this->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
+				$.post('<?php echo $view->action("save_content_items", $ct->getCollectionTypeID())?>', ualist, function(r) {
 	
 				});
 			}
@@ -236,17 +237,17 @@ if ($cap->canAccessComposer()) { ?>
 	
 	</script>
     
-<?php  } else { ?>
+<?php } else { ?>
 
 	<div class="ccm-pane-body">
     	<p><?php echo t('Unable to access composer settings.'); ?></p>
 	</div>
     
     <div class="ccm-pane-footer">
-        <?php  print $ih->button(t('Back to Page Types'), $this->url('/dashboard/pages/types'), 'left'); ?>
+        <?php print $ih->button(t('Back to Page Types'), $view->url('/dashboard/pages/types'), 'left'); ?>
     </div>
     
-<?php  } ?>
+<?php } ?>
 
 	<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false)?>
 

@@ -1,8 +1,8 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $ih = Loader::helper('validation/numbers');
 $dh = Loader::helper('concrete/dashboard');
-$ish = Loader::helper('concrete/interface');
+$ish = Loader::helper('concrete/ui');
 $canAdd = false;
 
 if ($ih->integer($_REQUEST['cID'])) {
@@ -23,7 +23,7 @@ if ($canAdd) {
 	$u = new User();
 	$r = new stdClass;
 	if (Loader::helper('validation/token')->validate('access_quick_nav', $_REQUEST['token'])) {
-		$qn = ConcreteDashboardMenu::getMine();
+			$qn = \Concrete\Core\Application\Service\DashboardMenu::getMine();
 		if ($qn->contains($c)) {
 			$qn->remove($c);
 			$task = 'add';

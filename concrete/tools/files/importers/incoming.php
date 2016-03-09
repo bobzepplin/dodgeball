@@ -1,28 +1,33 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 $fp = FilePermissions::getGlobal();
+use \Concrete\Core\File\EditResponse as FileEditResponse;
 if (!$fp->canAddFiles()) {
 	die(t("Unable to add files."));
 }
 $cf = Loader::helper("file");
 $valt = Loader::helper('validation/token');
-Loader::library("file/importer");
 
-$error = "";
+$error = Loader::helper('validation/error');
 
 if (isset($_POST['fID'])) {
 	// we are replacing a file
 	$fr = File::getByID($_REQUEST['fID']);
+	$frp = new Permissions($fr);
+	if (!$frp->canEditFileContents()) {
+		$error->add(t('You do not have permission to modify this file.'));
+	}
 } else {
 	$fr = false;
 }
 
 $searchInstance = $_POST['searchInstance'];
+$r = new FileEditResponse();
 
 $files = array();
-if ($valt->validate('import_incoming')) {
+if ($valt->validate('import_incoming') && !$error->has()) {
 	if( !empty($_POST) ) {
 		$fi = new FileImporter();
 		foreach($_POST as $k=>$name) {
@@ -30,21 +35,24 @@ if ($valt->validate('import_incoming')) {
 				if (!$fp->canAddFileType($cf->getExtension($name))) {
 					$resp = FileImporter::E_FILE_INVALID_EXTENSION;
 				} else {
-					$resp = $fi->import(DIR_FILES_INCOMING .'/'. $name, $name, $fr);
+                    $resp = $fi->importIncomingFile($name, $fr);
 				}
-				if (!($resp instanceof FileVersion)) {
-					$error .= $name . ': ' . FileImporter::getErrorMessage($resp) . "\n";
-				
+				if (!($resp instanceof \Concrete\Core\File\Version)) {
+					$error->add($name . ': ' . FileImporter::getErrorMessage($resp));
+
 				} else {
 					$files[] = $resp;
 					if ($_POST['removeFilesAfterPost'] == 1) {
-						unlink(DIR_FILES_INCOMING .'/'. $name);
+                        $fsl = \Concrete\Core\File\StorageLocation\StorageLocation::getDefault()->getFileSystemObject();
+                        $fsl->delete(REL_DIR_FILES_INCOMING . '/' . $name);
 					}
 					
 					if (!is_object($fr)) {
 						// we check $fr because we don't want to set it if we are replacing an existing file
 						$respf = $resp->getFile();
 						$respf->setOriginalPage($_POST['ocID']);
+					} else {
+						$respf = $fr;
 					}
 				}
 			}
@@ -52,32 +60,14 @@ if ($valt->validate('import_incoming')) {
 	}
 	
 	if (count($files) == 0) {
-		$error = t('You must select at least one file.');
+		$error->add(t('You must select at least one file.'));
 	}
 
 } else {
-	$error = $valt->getErrorMessage();
+	$error->add($valt->getErrorMessage());
 }
-?>
-<html>
-<head>
-<script language="javascript">
-	<?php  if(strlen($error)) { ?>
-		window.parent.ccmAlert.notice("<?php echo t('Upload Error')?>", "<?php echo str_replace("\n", '', nl2br($error))?>");
-		window.parent.ccm_alResetSingle();
-	<?php  } else { ?>
-		highlight = new Array();
-		<?php  foreach($files as $resp) { ?>
-			highlight.push(<?php echo $resp->getFileID()?>);
-			window.parent.ccm_uploadedFiles.push(<?php echo intval($resp->getFileID())?>);
-		<?php  } ?>
-		window.parent.jQuery.fn.dialog.closeTop();
-		setTimeout(function() { 
-			window.parent.ccm_filesUploadedDialog('<?php echo $searchInstance?>');		
-		}, 100);
-	<?php  } ?>
-</script>
-</head>
-<body>
-</body>
-</html>
+
+$r->setError($error);
+$r->setFiles($files);
+$r->setMessage(t2('%s file imported successfully.', '%s files imported successfully', count($files)));
+$r->outputJSON();

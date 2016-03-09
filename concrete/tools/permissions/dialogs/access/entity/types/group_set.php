@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 defined('C5_EXECUTE') or die("Access Denied.");
+use \Concrete\Core\Permission\Access\Entity\Type as PermissionAccessEntityType;
 
 $type = PermissionAccessEntityType::getByHandle('group_set');
 $url = $type->getAccessEntityTypeToolsURL();
@@ -9,38 +10,29 @@ $tp = new TaskPermission();
 if (!$tp->canAccessGroupSearch()) { 
 	echo(t("You have no access to groups."));
 } else { 	
-
-	if ($_REQUEST['filter'] == 'assign') { 
-		$pk = PermissionKey::getByHandle('assign_user_groups');
-		if (!$pk->validate()) {
-			die(t('You have no access to assign groups.'));
-		}
-	}
-	
-
 	$gl = new GroupSetList();
 	?>
 	<div id="ccm-list-wrapper">
 	
-	<?php  if ($gl->getTotal() > 0) { 
+	<?php if ($gl->getTotal() > 0) { 
 	
 		foreach ($gl->get() as $gs) { ?>
 	
 		<div class="ccm-group">
 			<div style="background-image: url(<?php echo ASSETS_URL_IMAGES?>/icons/group.png)" class="ccm-group-inner-indiv">
-				<a class="ccm-group-inner-atag" id="g<?php echo $g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?php echo $gs->getGroupSetID()?>)"><?php echo $gs->getGroupSetName()?></a>
+				<a class="ccm-group-inner-atag" id="g<?php echo $g['gID']?>" href="javascript:void(0)" onclick="ccm_selectGroupSet(<?php echo $gs->getGroupSetID()?>)"><?php echo $gs->getGroupSetDisplayName()?></a>
 			</div>
 		</div>
 	
-	<?php  } ?>
+	<?php } ?>
 	
-	<?php 
+	<?php
 	
 	} else { ?>
 	
 		<p><?php echo t('No group sets found.')?></p>
 		
-	<?php  } ?>
+	<?php } ?>
 	
 	</div>
 	
@@ -57,4 +49,4 @@ if (!$tp->canAccessGroupSearch()) {
 		});
 	}	
 	</script>
-<?php  } ?>
+<?php } ?>

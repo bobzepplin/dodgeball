@@ -1,27 +1,29 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 $h = Loader::helper('concrete/dashboard');
-$ih = Loader::helper('concrete/interface');
+$ih = Loader::helper('concrete/ui');
 $form = Loader::helper('form');
-echo $h->getDashboardPaneHeaderWrapper(t('Advanced Permissions'), false, 'span6 offset3', false);?>
-<form id="permissions-form" action="<?php  echo $this->action('enable_advanced_permissions')?>" method="post">
-<div class="ccm-pane-body <?php  if (PERMISSIONS_MODEL != 'simple') { ?> ccm-pane-body-footer <?php  } ?>">
-	<?php  echo Loader::helper('validation/token')->output('enable_advanced_permissions')?>
-	<?php  if (PERMISSIONS_MODEL != 'simple') { ?>
-		<p><?php echo t('Advanced permissions are turned on.')?></p>
-	<?php  } else { ?>
-		<p><?php echo t('Advanced permissions are turned off. Enable them below.')?></p>
-		<div class="block-message alert-message warning">
-		<?php echo t('<strong>Note:</strong> Once enabled, advanced permissions cannot be turned off.')?>
-		</div>
-	<?php  } ?>
-</div>
-<?php  if (PERMISSIONS_MODEL == 'simple') { ?>
-<div class="ccm-pane-footer">
-<?php 
-	$submit = $ih->submit( t('Enable Advanced Permissions'), 'permissions-form', 'right', 'primary');
+?>
+<form id="permissions-form" action="<?php echo $view->action('enable_advanced_permissions')?>" method="post">
+<?php echo Loader::helper('validation/token')->output('enable_advanced_permissions')?>
+<?php if (Config::get('concrete.permissions.model') != 'simple') { ?>
+    <p><?php echo t('Advanced permissions are turned on.')?></p>
+<?php } else { ?>
+    <p><?php echo t('Advanced permissions are turned off. Enable them below.')?></p>
+    <br/>
+    <div class="alert alert-warning">
+    <?php echo t('<strong>Note:</strong> Once enabled, advanced permissions cannot be turned off.')?>
+    </div>
+<?php } ?>
+
+<?php if (Config::get('concrete.permissions.model') == 'simple') { ?>
+<div class="ccm-dashboard-form-actions-wrapper">
+    <div class="ccm-dashboard-form-actions">
+<?php
+	$submit = $ih->submit( t('Enable Advanced Permissions'), 'permissions-form', 'right', 'btn-primary');
 	print $submit;
 ?>
 </div>
-<?php  } ?>
+</div>
+
+<?php } ?>
 </form>
-<?php  echo $h->getDashboardPaneFooterWrapper(false);?>

@@ -1,5 +1,7 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
+use \Concrete\Core\Permission\Access\Entity\Entity as PermissionAccessEntity;
+use \Concrete\Core\Permission\Duration as PermissionDuration;
 $p = new Permissions();
 if ($p->canAccessTaskPermissions()) { 
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	defined('C5_EXECUTE') or die("Access Denied.");
 	$c = Page::getCurrentPage();
 	$cp = new Permissions($c);
@@ -11,6 +11,7 @@
 		$ax = Area::get($stack, STACKS_AREA_NAME);
 		$axp = new Permissions($ax);
 		if ($axp->canRead()) {
+            $ax->disableControls();
 			$ax->display($stack);
 		}
 	}

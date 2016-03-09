@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $u = new User();
 
@@ -7,7 +7,7 @@ if (!$sh->canRead()) {
 	die(t('Access Denied'));
 }
 
-Loader::model('attribute/categories/collection');
+
 $cnt = Loader::controller('/dashboard/sitemap/search');
 $pageList = $cnt->getRequestedSearchResults();
 $columns = $cnt->get('columns');

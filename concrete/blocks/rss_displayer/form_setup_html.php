@@ -1,59 +1,69 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
-<style type="text/css">
-table#rssDisplayerSetup th {font-weight: bold; text-style: normal; padding-right: 8px; white-space: nowrap}
-table#rssDisplayerSetup td{ font-size:12px }
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
-</style> 
+/* @var $form \Concrete\Core\Form\Service\Form */
 
-<?php 
-
-if (!$rssObj->dateFormat) {
-	$rssObj->dateFormat = t('F jS');
-}
 ?>
-
-<div class="clearfix">
-	<label><?php echo t('Feed URL')?>:</label>
-	<div class="input"><input id="ccm_rss_displayer_url" name="url" value="<?php echo $rssObj->url?>" maxlength="255" type="text"></div>
+<div class="form-group">
+    <?php echo $form->label('url', t('Feed URL')) ?>
+    <input name="url" class="form-control" placeholder="<?php echo h(t('Feed URL')) ?>" value="<?php echo h($rssObj->url) ?>" type="text" required="required" />
 </div>
-
-<div class="clearfix">
-	<label><?php echo t('Date Format')?>:</label>
-	<div class="input"><input type="text" name="dateFormat" value="<?php echo $rssObj->dateFormat?>" />
-		<div class="help-block">(<?php echo t('Enter a <a href="%s" target="_blank">PHP date string</a> here.', 'http://www.php.net/date')?>)</div>
-
-	</div>
+<div class="form-group">
+    <label for="title">
+        <?php echo t('Feed Title') ?>
+        <span class="help-block" style="font-weight: normal;display: inline">(<?php echo t('Optional') ?>)</span>
+    </label>
+    <input name="title" class="form-control" placeholder="<?php echo h(t('Feed Title')) ?>" value="<?php echo h($rssObj->title) ?>"/>
 </div>
-
-<div class="clearfix">
-	<label><?php echo t('Feed Title')?>: (<?php echo t('Optional')?>)</label>
-	<div class="input">
-		<input id="ccm_rss_displayer_title" name="title" value="<?php echo $rssObj->title?>" maxlength="255" type="text" />
-	</div>
+<div class="form-group">
+    <?php echo $form->label('dateFormat', t('Date Format')) ?>
+    <?php
+    $dateFormats = $rssObj->getDefaultDateTimeFormats();
+    $dateFormats[':custom:'] = t('Custom date/time format');
+    $standardDateFormat = $rssObj->dateFormat;
+    $customDateFormat = '';
+    if(!$standardDateFormat) {
+        reset($dateFormats);
+        $standardDateFormat = key($dateFormats);
+    }
+    if(!array_key_exists($standardDateFormat, $dateFormats)) {
+        $customDateFormat = $standardDateFormat;
+        $standardDateFormat = ':custom:';
+    }
+    echo $form->select('standardDateFormat', $dateFormats, $standardDateFormat);
+    ?>
 </div>
-
-<div class="clearfix">
-	<label><?php echo t('# items to display')?>:</label>
-	<div class="input">
-		<input id="ccm_rss_displayer_itemsToDisplay"  name="itemsToDisplay" value="<?php echo intval($rssObj->itemsToDisplay)?>" type="text" size="2" maxlength="3" />
-	</div>
+<?php
+?><div class="form-group"<?php echo ($standardDateFormat === ':custom:') ? '' : ' style="display: none"'; ?>>
+    <?php echo $form->label('customDateFormat', t('Custom date format')); ?>
+    <?php echo $form->text('customDateFormat', $customDateFormat); ?>
+    <a href="http://php.net/manual/function.date.php" target="_blank"><?php echo t('See the PHP manual')?></a><?php
+?></div>
+<script>
+$(document).ready(function() {
+	function update() {
+		$('#customDateFormat').closest('div.form-group')[($('#standardDateFormat').val() === ':custom:') ? 'show' : 'hide']('fast');
+	}
+	$('#standardDateFormat').on('change', function() { update(); });
+});
+</script>
+<div class="form-group">
+    <?php echo $form->label('itemsToDisplay', t('Items to Show')) ?>
+    <input name="itemsToDisplay" class="form-control" placeholder="10" value="<?php echo h($rssObj->itemsToDisplay) ?>"/>
 </div>
-
-<div class="clearfix">
-	<label><?php echo t('Display')?>:</label>
-	<div class="input">
-	<ul class="inputs-list">
-		<li><label><input name="showSummary" type="radio" value="0" <?php echo (!$rssObj->showSummary)?'checked':''?>> <span><?php echo t('Only Titles')?></span></label></li>
-		<li><label><input name="showSummary" type="radio" value="1" <?php echo ($rssObj->showSummary)?'checked':''?>> <span><?php echo t('Titles & Summary')?></span></label></li>
-	</ul>
-	</div>
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" name="showSummary"<?php echo (!!$rssObj->showSummary ? ' checked' : '') ?> />
+            <?php echo t('Include Summary') ?>
+        </label>
+    </div>
 </div>
-
-<div class="clearfix">
-	<label></label>
-	<div class="input">
-	<ul class="inputs-list">
-		<li><label><input name="launchInNewWindow" type="checkbox" value="1" <?php echo ($rssObj->launchInNewWindow)?'checked':''?>> <span><?php echo t('Open links in a new window')?></span></label></li>
-	</ul>
-	</div>
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1"
+               name="launchInNewWindow"<?php echo (!!$rssObj->launchInNewWindow ? ' checked' : '') ?> />
+            <?php echo t('Open links in a new window') ?>
+        </label>
+    </div>
 </div>

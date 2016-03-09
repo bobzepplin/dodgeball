@@ -1,38 +1,53 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Composer Drafts'))?>
+$dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service\Date */
 
-<?php  
-$today = Loader::helper('date')->getLocalDateTime('now', 'Y-m-d');
+?>
+
+<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Page Drafts'))?>
+
+<?php 
 if (count($drafts) > 0) { ?>
 
 <table class="table table-striped">
 <tr>
 	<th width="60%"><?php echo t('Page Name')?></th>
-	<th width="20%"><?php echo t('Page Type')?></th>
-	<th width="20%"><?php echo t('Last Modified')?></th>
+	<th width="10%"><?php echo t('Author')?></th>
+	<th width="10%"><?php echo t('Page Type')?></th>
+	<th width="10%"><?php echo t('Last Modified')?></th>
 </tr>
-<?php  foreach($drafts as $dr) { ?>
-<tr>
-	<td><a href="<?php echo $this->url('/dashboard/composer/write', 'edit', $dr->getCollectionID())?>"><?php  if (!$dr->getCollectionName()) {
-		print t('(Untitled Page)');
-	} else {
-		print $dr->getCollectionName();
-	} ?></a></td>
-	<td><?php echo $dr->getCollectionTypeName()?></td>
-	<td><?php 
-		$mask = DATE_APP_GENERIC_MDYT;
-		if ($today == $dr->getCollectionDateLastModified("Y-m-d")) {
-			$mask = DATE_APP_GENERIC_T;
+<?php
+$num = 0;
+foreach($drafts as $dr) { 
+	$pdr = new Permissions($dr);
+	if ($pdr->canEditPage()) { 
+		$num++;
+		$pageName = ($dr->getCollectionName()) ? $dr->getCollectionName() : t('(Untitled Page)');
+		?>
+	<tr>
+		<td><a href="<?php echo $view->url('/dashboard/composer/write', 'draft', $dr->getCollectionID())?>"><?php echo $pageName?></a></td>
+		<td><?php
+		$ui = UserInfo::getByID($dr->getCollectionUserID());
+		if (is_object($ui)) {
+			print $ui->getUserDisplayName();
+		} else {
+			print t('(Unknown author)');
 		}
-		print $dr->getCollectionDateLastModified($mask)?></td>
-<?php  } ?>
+		?>
+		</td>
+		<td><?php echo $dr->getPageTypeName()?></td>
+		<td><?php echo $dh->formatPrettyDateTime($dr->getCollectionDateLastModified());?></td>
+	<?php } ?>
+
+<?php } ?>
 </table>
 
-<?php  } else { ?>
-	
-	<p><?php echo t('You have not created any drafts. <a href="%s">Visit Composer &gt;</a>', $this->url('/dashboard/composer/write'))?></p>
+<?php } 
 
-<?php  } ?>
+if ($num == 0) { ?>
+	
+	<p><?php echo t('There are no drafts. <a href="%s">Visit Composer &gt;</a>', $view->url('/dashboard/composer/write'))?></p>
+
+<?php } ?>
 
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper();?>

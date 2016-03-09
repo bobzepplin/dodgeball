@@ -1,5 +1,11 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
+
+use \Concrete\Core\Permission\Access\Entity\Entity as PermissionAccessEntity;
+use \Concrete\Core\Permission\Duration as PermissionDuration;
+use \Concrete\Core\Permission\Key\UserKey as UserPermissionKey;
+use \Concrete\Core\Workflow\Workflow as Workflow;
+
 $p = new Permissions();
 if ($p->canAccessTaskPermissions()) { 
 
@@ -26,7 +32,7 @@ if ($p->canAccessTaskPermissions()) {
 
 	if ($_REQUEST['task'] == 'display_access_cell' && Loader::helper("validation/token")->validate('display_access_cell')) {
 		$pk = UserPermissionKey::getByID($_REQUEST['pkID']);
-		$pa = UserPermissionAccess::getByID($_REQUEST['paID'], $pk);
+		$pa = PermissionAccess::getByID($_REQUEST['paID'], $pk);
 		Loader::element('permission/labels', array('pk' => $pk, 'pa' => $pa));
 	}
 	

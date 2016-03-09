@@ -1,12 +1,13 @@
-<?php  defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
-<?php 
+$dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service\Date */
+
 $list = $category->getPendingWorkflowProgressList();
 $items = $list->get();
 if (count($items) > 0) { ?>
 
 <div id="ccm-workflow-waiting-for-me-wrapper">
-<table class="ccm-results-list" id="ccm-workflow-waiting-for-me">
+<table class="ccm-results-list table table-condensed" id="ccm-workflow-waiting-for-me">
 <tr>
 	<th class="<?php echo $list->getSearchResultsClass('cvName')?>"><a href="<?php echo $list->getSortByURL('cvName', 'asc')?>"><?php echo t('Page Name')?></a></th>
 	<th><?php echo t('URL')?></th>
@@ -14,7 +15,7 @@ if (count($items) > 0) { ?>
 	<th class="<?php echo $list->getSearchResultsClass('wpCurrentStatus')?>"><a href="<?php echo $list->getSortByURL('wpCurrentStatus', 'desc')?>"><?php echo t('Current Status')?></a></th>
 	<th>&nbsp;</th>
 </tr>
-<?php  
+<?php 
 $noitems = true;
 	foreach($items as $it) { 
 	$p = $it->getPageObject();
@@ -26,12 +27,12 @@ $noitems = true;
 <tr class="ccm-workflow-waiting-for-me-row<?php echo $wp->getWorkflowProgressID()?>">
 	<td><?php echo $p->getCollectionName()?></td>
 	<td><a href="<?php echo Loader::helper('navigation')->getLinkToCollection($p)?>"><?php echo $p->getCollectionPath()?></a>
-	<td><?php echo date(DATE_APP_GENERIC_MDYT_FULL, strtotime($wp->getWorkflowProgressDateLastAction()))?></td>
+	<td><?php echo $dh->formatDateTime($wp->getWorkflowProgressDateLastAction(), true)?></td>
 	<td><a href="javascript:void(0)" title="<?php echo t('Click for history.')?>" onclick="$(this).parentsUntil('tr').parent().next().show()"><?php echo $wf->getWorkflowProgressStatusDescription($wp)?></a></td>
 	<td class="ccm-workflow-progress-actions">
 	<form action="<?php echo $wp->getWorkflowProgressFormAction()?>" method="post">
-	<?php  $actions = $wp->getWorkflowProgressActions(); ?>
-	<?php  foreach($actions as $act) { 
+	<?php $actions = $wp->getWorkflowProgressActions(); ?>
+	<?php foreach($actions as $act) { 
 		$attribs = '';
 		$_attribs = $act->getWorkflowProgressActionExtraButtonParameters();
 		foreach($_attribs as $key => $value) {
@@ -40,10 +41,10 @@ $noitems = true;
 		$br = '';
 		$bl = '';
 		if ($act->getWorkflowProgressActionStyleInnerButtonLeftHTML()) {
-			$bl = $act->getWorkflowProgressActionStyleInnerButtonLeftHTML() . ' ';
+			$bl = $act->getWorkflowProgressActionStyleInnerButtonLeftHTML() . '&nbsp;&nbsp;';
 		}
 		if ($act->getWorkflowProgressActionStyleInnerButtonRightHTML()) {
-			$br = ' ' . $act->getWorkflowProgressActionStyleInnerButtonRightHTML();
+			$br = '&nbsp;&nbsp;' . $act->getWorkflowProgressActionStyleInnerButtonRightHTML();
 		}
 		if ($act->getWorkflowProgressActionURL() != '') {
 			print '<a href="' . $act->getWorkflowProgressActionURL() . '&source=dashboard" ' . $attribs . ' class="btn btn-mini ' . $act->getWorkflowProgressActionStyleClass() . '">' . $bl . $act->getWorkflowProgressActionLabel() . $br . '</a> ';
@@ -60,14 +61,14 @@ $noitems = true;
 	</td>
 </tr>
 
-<?php  } 
+<?php } 
 
 } ?>
-<?php  if ($noitems) { ?>
+<?php if ($noitems) { ?>
 	<tr>
 		<td colspan="5"><?php echo t('There is nothing currently waiting for you.')?></td>
 	</tr>
-<?php  } ?>
+<?php } ?>
 </table>
 </div>
 
@@ -92,6 +93,6 @@ $(function() {
 });
 </script>
 
-<?php  } else { ?>
+<?php } else { ?>
 	<p><?php echo t('None.')?></p>
-<?php  } ?>
+<?php } ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $fp = FilePermissions::getGlobal();
 if (!$fp->canAccessFileManager()) {
@@ -7,7 +7,7 @@ if (!$fp->canAccessFileManager()) {
 
 $u = new User();
 	
-Loader::model('file_list');
+
 
 $cnt = Loader::controller('/dashboard/files/search');
 $fileList = $cnt->getRequestedSearchResults();

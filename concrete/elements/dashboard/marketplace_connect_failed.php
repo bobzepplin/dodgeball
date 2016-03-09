@@ -1,20 +1,20 @@
-<?php 
+<?php
 defined('C5_EXECUTE') or die("Access Denied.");
 $mi = Marketplace::getInstance();
 if ($mi->hasConnectionError() && $mi->getConnectionError() == Marketplace::E_MARKETPLACE_SUPPORT_MANUALLY_DISABLED) { ?>
 	<p><?php echo t('Marketplace integration disabled in configuration file.')?></p>
 
-<?php  } else {
+<?php } else {
 
-	$h = Loader::helper('concrete/interface');
+	$h = Loader::helper('concrete/ui');
 	?>
+
+    <hr/>
 	
-	<p><?php echo t('Your site is <strong>not</strong> connected to the concrete5 community.')?></p>
-	
-	<?php 
+	<?php
 	if ($mi->hasConnectionError()) { ?>
-		<div class="ccm-error block-message alert-message error"><p>
-		<?php 
+		<div class="alert alert-danger"><p>
+		<?php
 		switch($mi->getConnectionError()) {
 			case Marketplace::E_INVALID_BASE_URL:
 				print t('The base URL of your site does not match a registered instance of the site. Please click below to authenticate your site again.');
@@ -29,8 +29,14 @@ if ($mi->hasConnectionError() && $mi->getConnectionError() == Marketplace::E_MAR
 	}
 		?>
 		</p>
+
 		</div>
-		<?php 
+
+   			<h4><?php echo t("Project Page")?></h4>
+			<p><?php echo t('Your project page URL is:')?><br/>
+			<a href="<?php echo $mi->getSitePageURL()?>"><?php echo $mi->getSitePageURL()?></a></p>
+
+		<?php
 	} else { ?>
 		
 		<p><?php echo t('Setting up a project page for your site on concrete5.org is safe and private, and gives you lots of benefits including:')?></p>
@@ -46,8 +52,8 @@ if ($mi->hasConnectionError() && $mi->getConnectionError() == Marketplace::E_MAR
 		<p><?php echo t('It only takes a moment and you don\'t even have to leave your site.')?></p>
 		
 	
-	<?php  } ?>
+	<?php } ?>
 	
 	
-	<?php  print $h->button(t('Connect to Community'), View::url('/dashboard/extend/connect'), '', 'primary')?>
-<?php  } ?>
+	<?php print $h->button(t('Re-connect to Community'), View::url('/dashboard/extend/connect'), '', 'primary')?>
+<?php } ?>
