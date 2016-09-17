@@ -9,13 +9,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="William Christen">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700,900' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
 
+    <meta property="og:url"           content="<?php echo BASE_URL?>" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="Le dodgeball Beach Tournament 2016" />
+    <meta property="og:description"   content="Un tournoi décomplexé de balle à deux camps sur la plage de Portalban le 18 juin 2016. Certaines expériences se définissent en dehors du temps et de son espace, le seul moyen de les comprendre, c'est de s'y risquer;)" />
+    <meta property="og:image"         content="<?php echo BASE_URL?>/application/themes/afdbba/dist/img/dodgeball_2016_og_image.jpg" />
 
-    <link href="<?php echo $this->getThemePath()?>/app/components/fancybox/jquery.fancybox.css" rel="stylesheet">
-    <link href="<?php echo $this->getThemePath()?>/app/components/fancybox/helpers/jquery.fancybox-thumbs.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,900' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
 
     <link href="<?php echo $this->getThemePath()?>/dist/css/screen.css" rel="stylesheet">
 
@@ -29,21 +31,18 @@ defined('C5_EXECUTE') or die("Access Denied.");
     <![endif]-->
 
 
-    <!------------------- MESSAGE DE MAJ POUR IE8 ------------------->
+    <!-- MESSAGE DE MAJ POUR IE8 -->
     <!--[if lte IE 8]>
-    <link href="<?php echo $this->getThemePath()?>dist/css/ie.css" rel="stylesheet">
+    <link href="<?php echo $this->getThemePath()?>/dist/css/ie.css" rel="stylesheet">
     <![endif]-->
 
 </head>
 <body>
-
 <div class="messageIe">
     <span class="cache-slide"></span>
     <div class="centerIe">
-        <a class="" href=""><img width="auto" src="dist/img/logo.png" alt="André Liechti" title="André Liechti"></a><br><br>
-        <hr><br>
         You are using an outdated version of Internet Explorer.<br>
         Please upgrade your browser :<br><br>
-        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank"><img src="dist/img/ie.png" width="50" alt="internet explorer" title="internet explorer"></a>
+        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank"><img src="<?php echo $this->getThemePath()?>/dist/img/ie.png" width="50" alt="internet explorer" title="internet explorer"></a>
     </div>
 </div>

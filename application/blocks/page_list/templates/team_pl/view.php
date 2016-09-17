@@ -18,7 +18,7 @@ $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service
 		$title = $th->entities($page->getCollectionName());
 		$url = ($page->getCollectionPointerExternalLink() != '') ? $page->getCollectionPointerExternalLink() : $nh->getLinkToCollection($page);
 		$description = $page->getCollectionDescription();
-		$description = $controller->truncateSummaries ? $th->wordSafeShortText($description, $controller->truncateChars) : $description;
+		$description = $th->wordSafeShortText($description, 256);
 		$description = $th->entities($description);
         $team_slogan = $page->getAttribute('team_slogan');
         $captain = $page->getAttribute('captain');
@@ -46,7 +46,7 @@ $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service
         <div class="col-sm-4 team-item">
             <div class="team-item-inside">
                 <div class="team-item-image">
-                    <div class="team-item-logo"><img src="<?php echo $Cimage ?>" class="img-responsive" /></div>
+                    <div class="team-item-logo"><a class="fancybox fancybox.ajax" href="<?php echo $url ?>"><img data-expand="-110" class="lazyload" src="<?php echo BASE_URL ?>/application/themes/afdbba/dist/img/default.gif" data-src="<?php echo $Cimage ?>" alt="Image <?php echo $th->wordSafeShortText($title, 30) ?>" class="img-responsive" /></a></div>
                 </div>
                 <div class="team-item-content">
                     <h4><?php echo $th->wordSafeShortText($title, 30) ?></h4>
@@ -67,26 +67,11 @@ $dh = Core::make('helper/date'); /* @var $dh \Concrete\Core\Localization\Service
                                         echo 'Mixte: <i class="fa fa-female"></i><i class="fa fa-female"></i><i class="fa fa-female"></i><i class="fa fa-male"></i><i class="fa fa-male"></i>';
                                 } ?>
                         </div>
-                        <div class="col-xs-12">
-                        <?php if($team_trophy) {
-                            echo 'Victoire(s):';
-                            foreach($team_trophy as $trophy){
-                                echo '<i class="fa fa-trophy"></i> ' . $trophy .' ';
-                                } ?>
-                        <?php } ?>
-                        </div>
+                        <a class="cooli-button fancybox fancybox.ajax" href="<?php echo $url ?>"><i class="fa fa-plus"></i></a>
+
                     </div>
-                    <div class="col-xs-12 nopadding additionnal-info">
-                        <h4>Description:</h4>
-                        <p><?php echo $description ?></p>
-                        <br>
-                        <?php if($team_fairplay) {
-                            echo 'Prix du Fair-play:';
-                            foreach($team_fairplay as $fairplay){
-                                echo '<i class="fa fa-thumbs-up"></i> ' . $fairplay .' ';
-                            } ?>
-                        <?php } ?>
-                    </div>
+
+
                 </div>
             </div>
         </div>

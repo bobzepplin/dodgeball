@@ -33,6 +33,8 @@ $(document).ready(function(){
     $(".fancybox").fancybox({
         prevEffect	: 'none',
         nextEffect	: 'none',
+        maxWidth	: 800,
+        maxHeight	: 600,
         helpers	: {
             title	: {
                 type: 'outside'
@@ -56,7 +58,6 @@ $(document).ready(function(){
     $(this).attr('href', href);
     $(this).text(res);
     });
-
 
     //-----------SMOTH SCROLL + Cacher le menu-----------//
     $('.next-slide').click(function(){
@@ -116,7 +117,7 @@ $(document).ready(function(){
     });
     //-----------END JE CACHE / JE MONTRE LE MENU-----------//
 
-    if($('.success-message').length || $('.alert-danger').length){
+    if($('.success-message').length || $('.form-errors').length){
         $('#introduction').fadeOut("slow", function(){
             $('#inscription').fadeIn("slow");
         });

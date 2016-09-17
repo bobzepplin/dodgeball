@@ -24,7 +24,7 @@ var sources = {
         'app/components/modernizr/modernizr.js',
         'app/components/fancybox/jquery.fancybox.js',
         'app/components/fancybox/helpers/jquery.fancybox-thumbs.js',
-        'app/components/lazyloadxt/dist/jquery.lazyloadxt.js',
+        'app/components/lazyload.js',
         'app/js/main.js'
     ]
 };
@@ -50,15 +50,16 @@ gulp.task('css', function () {
 });
 
 
-gulp.task('css_vendors', function () {
-    gulp.src([
-        'add-here-a-path-to-your-vendors-css',
-        'add-here-a-second-path-to-your-vendors-css'
-    ])
-        .pipe(concat('vendors.css'))
+gulp.task('css_production', function () {
+    gulp.src('./app/sass/screen.scss')
+        .pipe(sourcemaps.init())
+        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+        .pipe(sass())
         .pipe(minifycss())
-        .pipe(gulp.dest(destinations.css))
-        .pipe(notify('Vendors CSS concatenated & minified'));
+        .pipe(plumber.stop())
+        .pipe(gulp.dest('./dist/css'))
+        .pipe(notify('Sass compiled & minified'));
+
 });
 
 
@@ -67,7 +68,7 @@ gulp.task('js', function () {
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(concat('main.js'))
-      // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(destinations.js))
         .pipe(notify('JS concatenated & uglified'));
 });

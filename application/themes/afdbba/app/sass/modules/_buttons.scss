@@ -17,6 +17,11 @@
     letter-spacing: 0.05em;
     color: $white;
   }
+  &.video{
+    margin: 0 0 0 5px;
+    background: #545454;
+    border-radius: 10px;
+  }
   &.small{
     font-size: 0.8em;
     border-radius: 2px;
@@ -27,3 +32,4 @@
     }
   }
 }
+

@@ -64,14 +64,14 @@ $captcha = $surveyBlockInfo['displayCaptcha'] ? Loader::helper('validation/captc
 
 <?php  if ($errors): ?>
 
-	<div class="alert alert-danger">
+	<div class="form-errors">
 		<?php  echo $errorHeader; ?>
 		<?php  echo $errorDivs; /* each error wrapped in <div class="error">...</div> */ ?>
 	</div>
 
 <?php  endif; ?>
 <?php  if ($success){ ?>
-	<div class="success-message">
+	<div  class="success-message">
 		<i class="fa fa-check"></i> <?php  echo h($thanksMsg); ?>
 	</div>
 <?php }else{ ?>
@@ -88,6 +88,8 @@ $captcha = $surveyBlockInfo['displayCaptcha'] ? Loader::helper('validation/captc
                     <?php  endif; ?>
 				</label>
 				<?php  echo $question['input']; ?>
+				<?php echo (($question['type'] == 'select')?'<span class="text-muted small" style="font-weight: normal; font-size: 11px"><i class="fa fa-warning"></i><small> femmes(5 filles), hommes (filles acceptées), mixte(max. 2 hommes)</small></span>':'') ?>
+
 			</div>
 		<?php  endforeach; ?>
 		

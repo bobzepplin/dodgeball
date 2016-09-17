@@ -37,7 +37,6 @@
   background: #fff;
   white-space: nowrap;
 
-  //background-image: url(../../dist/img/logoback.jpg);
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: 515px;
@@ -91,9 +90,8 @@
     hr{
       width: 80px;
       display: table-caption;
-      border-color: $base;
-      margin: 30px 0;
-      border-color: #5a6265;
+      border-color: #FFF;
+      border-color: #DADADA;
 
       @include breakpoint($md) {
         margin: 20px auto;
@@ -161,40 +159,47 @@
       ul{
         padding: 0;
         margin: 0;
+        font-family: 'Paytone One', sans-serif;
         li{
           list-style-type: none;
           a{
-            color: #5a6265;
+
+            font-size: 1.3em;
+            line-height: 1.26562em;
+            padding: 0.5em;
+            display: inline-block;
             @include transition(all, .6s, ease);
-            font-size: ms(-1);
-            background-image: url('../../dist/img/traitmenu.jpg');
-            background-repeat: no-repeat;
-            background-position: left -100px center;
             text-transform: uppercase;
 
-
-
-            @include breakpoint($lg) {
-              font-size: ms(1);
-              line-height: ms(2);
-            }
-
             @include breakpoint($md) {
-              background-image: none;
               font-size: ms(2);
               line-height: ms(4);
             }
 
             &:hover{
               color: $clientcolor;
-              padding: 0 0 0 18px;
-              background-position: left -35px center;
-
               @include breakpoint($md) {
                 padding: 0;
               }
 
             }
+          }
+        }
+        &.second{
+          font-family: 'Roboto', sans-serif;
+          font-size: 1em;
+          li{
+            a{
+              font-size: 1em;
+              padding: 0.5em;
+              text-transform: none;
+            }
+          }
+          @include breakpoint($sm) {
+            font-family: 'Paytone One', sans-serif;
+            font-size: 1.3em;
+            max-width: 100%;
+
           }
         }
       }

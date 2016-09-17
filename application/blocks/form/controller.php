@@ -116,7 +116,7 @@ class Controller extends BlockController
             $this->requireAsset('css', 'jquery/ui');
             $this->requireAsset('javascript', 'jquery/ui');
         }
-        $this->requireAsset('css', 'core/frontend/errors');
+        //$this->requireAsset('css', 'core/frontend/errors');
         if ($this->displayCaptcha) {
             $this->requireAsset('css', 'core/frontend/captcha');
         }
@@ -559,51 +559,60 @@ class Controller extends BlockController
                     $adminUserInfo = UserInfo::getByID(USER_SUPER_ID);
                     $formFormEmailAddress = $adminUserInfo->getUserEmail();
                 }
-
-                $mh = Core::make('helper/mail');
-                $mh->to($this->recipientEmail);
-                $mh->from($formFormEmailAddress);
-                $mh->replyto($replyToEmailAddress);
-                $mh->addParameter('formName', $this->surveyName);
-                $mh->addParameter('questionSetId', $this->questionSetId);
-                $mh->addParameter('questionAnswerPairs', $questionAnswerPairs);
-                $mh->load('block_form_submission');
-                $mh->setSubject('Une nouvelle inscription');
-                //echo $mh->body.'<br>';
-                @$mh->sendMail();
-
-
-
-                $mh2 = Core::make('helper/mail');
-                $mh2->from( $formFormEmailAddress );
-                $mh2->addParameter('formName', $this->surveyName);
-                $mh2->addParameter('questionSetId', $this->questionSetId);
-                $mh2->addParameter('questionAnswerPairs', $questionAnswerPairs);
-                $mh2->load('block_form_submission_public');
-                $mh2->setSubject('Votre inscription au dodgeball beach tournament 2016');
-                $mh2->to($_POST['Question6']);
-                @$mh2->sendMail();
+                if($this->questionSetId == 1454843347){
+                    $mh = Core::make('helper/mail');
+                    $mh->to($this->recipientEmail);
+                    $mh->from($formFormEmailAddress);
+                    $mh->replyto($replyToEmailAddress);
+                    $mh->addParameter('formName', $this->surveyName);
+                    $mh->addParameter('questionSetId', $this->questionSetId);
+                    $mh->addParameter('questionAnswerPairs', $questionAnswerPairs);
+                    $mh->load('inscription');
+                    $mh->setSubject('Une nouvelle inscription');
+                    //echo $mh->body.'<br>';
+                    @$mh->sendMail();
 
 
+                    $mh2 = Core::make('helper/mail');
+                    $mh2->from( $formFormEmailAddress );
+                    $mh2->addParameter('formName', $this->surveyName);
+                    $mh2->addParameter('questionSetId', $this->questionSetId);
+                    $mh2->addParameter('questionAnswerPairs', $questionAnswerPairs);
+                    $mh2->load('inscription_public');
+                    $mh2->setSubject('Votre inscription au dodgeball beach tournament 2016');
+                    $mh2->to($_POST['Question6']);
+                    @$mh2->sendMail();
 
 
-                $parentPage = Page::getbyID(158);
-                $pageType = \PageType::getByHandle('page');
-                $template = \PageTemplate::getByHandle('inpage');
-                $entry = $parentPage->add($pageType, array(
-                    'cName' => $_POST['Question1'],
-                    'cDescription' => $_POST['Question7']), $template);
+                    $parentPage = Page::getbyID(158);
+                    $pageType = \PageType::getByHandle('team');
+                    $template = \PageTemplate::getByHandle('team');
+                    $entry = $parentPage->add($pageType, array(
+                        'cName' => $_POST['Question1'],
+                        'cDescription' => $_POST['Question7']), $template);
 
-                /** @var \Concrete\Core\Page\Page $entry */
-                $entry->setAttribute('captain',$_POST['Question4']);
-                $entry->setAttribute('team_type',$_POST['Question3']);
-                $entry->setAttribute('team_slogan',$_POST['Question2']);
+                    /** @var \Concrete\Core\Page\Page $entry */
+                    $entry->setAttribute('captain',$_POST['Question4']);
+                    $entry->setAttribute('team_type',$_POST['Question3']);
+                    $entry->setAttribute('team_slogan',$_POST['Question2']);
 
-                if (count($tmpFileIds)==1) {
-                    $obj_file = File::getById($tmpFileIds[8]);
-                    $entry->setAttribute('team_image',$obj_file);
+                    if (count($tmpFileIds)==1) {
+                        $obj_file = File::getById($tmpFileIds[8]);
+                        $entry->setAttribute('team_image',$obj_file);
+                    }
+                }else{
+                    $mh = Core::make('helper/mail');
+                    $mh->to($this->recipientEmail);
+                    $mh->from($formFormEmailAddress);
+                    $mh->replyto($replyToEmailAddress);
+                    $mh->addParameter('formName', $this->surveyName);
+                    $mh->addParameter('questionSetId', $this->questionSetId);
+                    $mh->addParameter('questionAnswerPairs', $questionAnswerPairs);
+                    $mh->load('block_form_submission');
+                    $mh->setSubject('Votre site dodgeball.ch');
+                    //echo $mh->body.'<br>';
+                    @$mh->sendMail();
                 }
-
 
             }
 

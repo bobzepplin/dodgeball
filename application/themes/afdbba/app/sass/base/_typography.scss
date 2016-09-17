@@ -2,7 +2,7 @@ html {
   font-size: 1em;
   color: $base;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   line-height: ms(6);
   -webkit-font-smoothing: antialiased;
 
@@ -28,14 +28,21 @@ html {
 
 }
 
+body{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
 h1, h2, h3, h4, h5{
-  font-family: 'Abril Fatface', cursive;
+  font-family: 'Paytone One', sans-serif;
+  font-weight: normal;
   margin: 0;
 }
 
 p, span{
   font-size: ms(1);
   color: $base;
+  font-family: 'Roboto', sans-serif;
 }
 
 
@@ -51,6 +58,9 @@ b, strong{
 
 h1 {
    font-size: ms(10);
+  @include breakpoint($sm) {
+    font-size: ms(10)*.8;
+  }
 }
 
 h2 {
@@ -81,10 +91,11 @@ h3 {
 }
 
 h4 {
-  font-family: 'Roboto', sans-serif;
+
   font-size: ms(2);
 }
 
 small {
   font-size: ms(-1);
 }
+
